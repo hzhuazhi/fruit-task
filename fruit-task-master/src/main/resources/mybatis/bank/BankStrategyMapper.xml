@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fruit.task.master.core.mapper.BankStrategyMapper">
+
+
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.bank_id,a.alias,a.priority,a.open_time_slot,a.wx_in_day_money,a.wx_in_month_money,a.wx_in_day_num,a.zfb_in_day_money,a.zfb_in_month_money,
+        a.zfb_in_day_num,a.card_in_day_money,a.card_in_month_money,a.card_in_day_num,a.remark,a.use_status,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            <if test="bankId != null and bankId != '' " >
+                and a.bank_id = #{bankId}
+            </if>
+            <if test="useStatus != null and useStatus != '' " >
+                and a.use_status = #{useStatus}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+    <!-- 显示所有数据 -->
+    <select id="findAll" resultType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="findByCondition" parameterType="Object" resultType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 根据条件查询信息-->
+    <select id="findByObject" parameterType="Object" resultType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 根据id查询信息-->
+    <select id="findById" parameterType="java.lang.Long" resultType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" parameterType="Object" resultType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_bank_strategy a
+        <include refid="Example_Where_Clause"/>
+        <include refid="Example_Order_By"/>
+        <if test="pageNumber != null and pageNumber != ''" >
+            limit #{start},#{end}
+        </if>
+    </select>
+
+
+    <!-- 添加基本信息 -->
+    <insert id="add" parameterType="com.fruit.task.master.core.model.bank.BankStrategyModel" >
+        <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
+        <!--SELECT LAST_INSERT_ID() as id-->
+        <!--</selectKey>-->
+        insert into tb_fr_bank_strategy
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="bankId != null and bankId != '' " >
+                bank_id,
+            </if>
+            <if test="alias != null and alias != '' " >
+                alias,
+            </if>
+            <if test="priority != null and priority != '' " >
+                priority,
+            </if>
+            <if test="openTimeSlot != null and openTimeSlot != '' " >
+                open_time_slot,
+            </if>
+            <if test="wxInDayMoney != null and wxInDayMoney != '' " >
+                wx_in_day_money,
+            </if>
+            <if test="wxInMonthMoney != null and wxInMonthMoney != '' " >
+                wx_in_month_money,
+            </if>
+            <if test="wxInDayNum != null and wxInDayNum != '' " >
+                wx_in_day_num,
+            </if>
+            <if test="zfbInDayMoney != null and zfbInDayMoney != '' " >
+                zfb_in_day_money,
+            </if>
+            <if test="zfbInMonthMoney != null and zfbInMonthMoney != '' " >
+                zfb_in_month_money,
+            </if>
+            <if test="zfbInDayNum != null and zfbInDayNum != '' " >
+                zfb_in_day_num,
+            </if>
+            <if test="cardInDayMoney != null and cardInDayMoney != '' " >
+                card_in_day_money,
+            </if>
+            <if test="cardInMonthMoney != null and cardInMonthMoney != '' " >
+                card_in_month_money,
+            </if>
+            <if test="cardInDayNum != null and cardInDayNum != '' " >
+                card_in_day_num,
+            </if>
+            <if test="remark != null and remark != '' " >
+                remark,
+            </if>
+            <if test="useStatus != null and useStatus != '' " >
+                use_status,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="bankId != null and bankId != '' " >
+                <![CDATA[  #{bankId}, ]]>
+            </if>
+            <if test="alias != null and alias != '' " >
+                <![CDATA[  #{alias}, ]]>
+            </if>
+            <if test="priority != null and priority != '' " >
+                <![CDATA[  #{priority}, ]]>
+            </if>
+            <if test="openTimeSlot != null and openTimeSlot != '' " >
+                <![CDATA[  #{openTimeSlot}, ]]>
+            </if>
+            <if test="wxInDayMoney != null and wxInDayMoney != '' " >
+                <![CDATA[  #{wxInDayMoney}, ]]>
+            </if>
+            <if test="wxInMonthMoney != null and wxInMonthMoney != '' " >
+                <![CDATA[  #{wxInMonthMoney}, ]]>
+            </if>
+            <if test="wxInDayNum != null and wxInDayNum != '' " >
+                <![CDATA[  #{wxInDayNum}, ]]>
+            </if>
+            <if test="zfbInDayMoney != null and zfbInDayMoney != '' " >
+                <![CDATA[  #{zfbInDayMoney}, ]]>
+            </if>
+            <if test="zfbInMonthMoney != null and zfbInMonthMoney != '' " >
+                <![CDATA[  #{zfbInMonthMoney}, ]]>
+            </if>
+            <if test="zfbInDayNum != null and zfbInDayNum != '' " >
+                <![CDATA[  #{zfbInDayNum}, ]]>
+            </if>
+            <if test="cardInDayMoney != null and cardInDayMoney != '' " >
+                <![CDATA[  #{cardInDayMoney}, ]]>
+            </if>
+            <if test="cardInMonthMoney != null and cardInMonthMoney != '' " >
+                <![CDATA[  #{cardInMonthMoney}, ]]>
+            </if>
+            <if test="cardInDayNum != null and cardInDayNum != '' " >
+                <![CDATA[  #{cardInDayNum}, ]]>
+            </if>
+            <if test="remark != null and remark != '' " >
+                <![CDATA[  #{remark}, ]]>
+            </if>
+            <if test="useStatus != null and useStatus != '' " >
+                <![CDATA[  #{useStatus}, ]]>
+            </if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新基本信息 -->
+    <update id="update" parameterType="com.fruit.task.master.core.model.bank.BankStrategyModel">
+        UPDATE tb_fr_bank_strategy a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="bankId != null and bankId != '' " >
+                a.bank_id = #{bankId},
+            </if>
+            <if test="alias != null and alias != '' " >
+                a.alias = #{alias},
+            </if>
+            <if test="priority != null and priority != '' " >
+                a.priority = #{priority},
+            </if>
+            <if test="openTimeSlot != null and openTimeSlot != '' " >
+                a.open_time_slot = #{openTimeSlot},
+            </if>
+            <if test="wxInDayMoney != null and wxInDayMoney != '' " >
+                a.wx_in_day_money = #{wxInDayMoney},
+            </if>
+            <if test="wxInMonthMoney != null and wxInMonthMoney != '' " >
+                a.wx_in_month_money = #{wxInMonthMoney},
+            </if>
+            <if test="wxInDayNum != null and wxInDayNum != '' " >
+                a.wx_in_day_num = #{wxInDayNum},
+            </if>
+            <if test="zfbInDayMoney != null and zfbInDayMoney != '' " >
+                a.zfb_in_day_money = #{zfbInDayMoney},
+            </if>
+            <if test="zfbInMonthMoney != null and zfbInMonthMoney != '' " >
+                a.zfb_in_month_money = #{zfbInMonthMoney},
+            </if>
+            <if test="zfbInDayNum != null and zfbInDayNum != '' " >
+                a.zfb_in_day_num = #{zfbInDayNum},
+            </if>
+            <if test="cardInDayMoney != null and cardInDayMoney != '' " >
+                a.card_in_day_money = #{cardInDayMoney},
+            </if>
+            <if test="cardInMonthMoney != null and cardInMonthMoney != '' " >
+                a.card_in_month_money = #{cardInMonthMoney},
+            </if>
+            <if test="cardInDayNum != null and cardInDayNum != '' " >
+                a.card_in_day_num = #{cardInDayNum},
+            </if>
+            <if test="remark != null and remark != '' " >
+                a.remark = #{remark},
+            </if>
+            <if test="useStatus != null and useStatus != '' " >
+                a.use_status = #{useStatus},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_fr_bank_strategy a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+
+
+</mapper>

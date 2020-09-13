@@ -1,0 +1,2 @@
+rootProject.name = 'fruit-task'
+include 'fruit-task-master'
