@@ -25,11 +25,16 @@ public class TaskMethod {
     /**
      * @Description: 组装查询定时任务的查询条件
      * @param limitNum - 多少条数据
+     * @param runType - 运行类型
+     * @param workType - 运算类型
+     * @param dataType - 数据类型
+     * @param greaterThan - 大于
+     * @param lessThan - 小于
      * @return
      * @author yoko
      * @date 2020/1/11 16:23
      */
-    public static StatusModel assembleTaskStatusQuery(int limitNum, int runType, int workType, int dataType){
+    public static StatusModel assembleTaskStatusQuery(int limitNum, int runType, int workType, int dataType, int greaterThan, int lessThan){
         StatusModel resBean = new StatusModel();
         if (runType > 0){
             resBean.setRunStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
@@ -40,6 +45,12 @@ public class TaskMethod {
         }
         if (dataType > 0){
             resBean.setDataType(dataType);
+        }
+        if (greaterThan > 0){
+            resBean.setGreaterThan(greaterThan);
+        }
+        if (lessThan > 0){
+            resBean.setLessThan(lessThan);
         }
         resBean.setLimitNum(limitNum);
         return resBean;

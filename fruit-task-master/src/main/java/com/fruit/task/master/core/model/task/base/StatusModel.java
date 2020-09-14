@@ -105,6 +105,16 @@ public class StatusModel implements Serializable {
      */
     private Integer collectionType;
 
+    /**
+     * 大于
+     */
+    private Integer greaterThan;
+
+    /**
+     * 小于
+     */
+    private Integer lessThan;
+
     public Long getId() {
         return id;
     }
@@ -265,5 +275,21 @@ public class StatusModel implements Serializable {
 
     public void setCollectionType(Integer collectionType) {
         this.collectionType = collectionType;
+    }
+
+    public Integer getGreaterThan() {
+        return greaterThan;
+    }
+
+    public void setGreaterThan(Integer greaterThan) {
+        this.greaterThan = greaterThan;
+    }
+
+    public Integer getLessThan() {
+        return lessThan;
+    }
+
+    public void setLessThan(Integer lessThan) {
+        this.lessThan = lessThan;
     }
 }
