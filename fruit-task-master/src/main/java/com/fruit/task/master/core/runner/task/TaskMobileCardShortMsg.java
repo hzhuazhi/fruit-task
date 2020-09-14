@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
+import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
 import com.fruit.task.master.core.model.strategy.StrategyModel;
@@ -83,7 +84,13 @@ public class TaskMobileCardShortMsg {
                         statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 4, null);
                     }
                     if (!StringUtils.isBlank(data.getPhoneNum())){
-
+                        MobileCardModel mobileCardQuery = TaskMethod.assembleMobileCardQuery(0, data.getPhoneNum(), 0,0,0);
+                        MobileCardModel mobileCardModel = ComponentUtil.mobileCardService.getMobileCard(mobileCardQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+                        if (mobileCardModel != null && mobileCardModel.getId() != null && mobileCardModel.getId() > 0){
+                            // 更新原始数据的手机ID
+                            MobileCardShortMsgModel mobileCardShortMsgUpdate = TaskMethod.assembleMobileCardShortMsgUpdateMobileCardId(data.getId(), mobileCardModel.getId());
+                            ComponentUtil.mobileCardShortMsgService.update(mobileCardShortMsgUpdate);
+                        }
                     }
                     // 更新状态
                     ComponentUtil.taskMobileCardShortMsgService.updateStatus(statusModel);

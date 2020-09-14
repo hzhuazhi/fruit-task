@@ -1,5 +1,6 @@
 package com.fruit.task.master.util;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
+import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
@@ -153,6 +154,52 @@ public class TaskMethod {
             }
         }
         return count;
+    }
+
+    /**
+     * @Description: 组装查询手机号的查询方法
+     * @param id - 主键ID
+     * @param phoneNum - 手机号
+     * @param isArrears - 是否欠费：1未欠费，2欠费
+     * @param heartbeatStatus - 心跳状态：1初始化异常，2正常
+     * @param useStatus - 使用状态:1初始化有效正常使用，2无效暂停使用
+     * @return com.hz.fruit.master.core.model.mobilecard.MobileCardModel
+     * @author yoko
+     * @date 2020/9/12 14:53
+     */
+    public static MobileCardModel assembleMobileCardQuery(long id, String phoneNum, int isArrears, int heartbeatStatus, int useStatus){
+        MobileCardModel resBean = new MobileCardModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(phoneNum)){
+            resBean.setPhoneNum(phoneNum);
+        }
+        if (isArrears > 0){
+            resBean.setIsArrears(isArrears);
+        }
+        if (heartbeatStatus > 0){
+            resBean.setHeartbeatStatus(heartbeatStatus);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: 更新所有短信的手机ID
+     * @param id - 短信的主键ID
+     * @param mobileCardId - 手机卡的主键ID
+     * @return
+     * @author yoko
+     * @date 2020/9/14 14:09
+    */
+    public static MobileCardShortMsgModel assembleMobileCardShortMsgUpdateMobileCardId(long id, long mobileCardId){
+        MobileCardShortMsgModel resBean = new MobileCardShortMsgModel();
+        resBean.setId(id);
+        resBean.setMobileCardId(mobileCardId);
+        return resBean;
     }
 
 }

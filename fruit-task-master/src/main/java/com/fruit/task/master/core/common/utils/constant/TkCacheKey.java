@@ -13,5 +13,10 @@ public interface TkCacheKey {
      */
     String LOCK_MOBILE_CARD_SHORT_MSG = "-1";
 
+    /**
+     * 手机卡的信息
+     */
+    String MOBILE_CARD_PHONE_NUM = "-2";
+
 
 }
