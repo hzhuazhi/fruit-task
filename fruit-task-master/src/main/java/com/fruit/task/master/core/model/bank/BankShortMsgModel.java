@@ -25,7 +25,7 @@ public class BankShortMsgModel extends BasePage implements Serializable {
     private String orderNo;
 
     /**
-     * 归属手机号ID：对应表tb_fn_mobile_card的主键ID
+     * 归属手机号ID：对应表tb_fr_mobile_card的主键ID
      */
     private Long mobileCardId;
 
@@ -35,7 +35,7 @@ public class BankShortMsgModel extends BasePage implements Serializable {
     private String phoneNum;
 
     /**
-     * 归属银行卡ID：对应表tb_fn_bank的主键ID
+     * 归属银行卡ID：对应表tb_fr_bank的主键ID
      */
     private Long bankId;
 

@@ -19,7 +19,7 @@ public class ShortMsgArrearsModel extends BasePage implements Serializable {
     private Long id;
 
     /**
-     * 归属手机号ID：对应表tb_fn_mobile_card的主键ID
+     * 归属手机号ID：对应表tb_fr_mobile_card的主键ID
      */
     private Long mobileCardId;
 

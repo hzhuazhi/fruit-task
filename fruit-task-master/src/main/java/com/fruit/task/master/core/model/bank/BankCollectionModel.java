@@ -24,12 +24,12 @@ public class BankCollectionModel extends BasePage implements Serializable {
     private Long id;
 
     /**
-     * 归属银行卡ID：对应表tb_fn_bank的主键ID
+     * 归属银行卡ID：对应表tb_fr_bank的主键ID
      */
     private Long bankId;
 
     /**
-     * 订单号：对应表tb_fn_did_recharge里面的订单号：后续补充进来的
+     * 订单号：对应表tb_fr_order里面的订单号：后续补充进来的
      */
     private String orderNo;
 
