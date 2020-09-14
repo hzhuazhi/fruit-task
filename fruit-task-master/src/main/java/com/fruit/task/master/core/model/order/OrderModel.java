@@ -201,6 +201,16 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private String orderStatusStr;
 
+    /**
+     * 创建时间的开始时间
+     */
+    private String startTime;
+
+    /**
+     * 创建时间的结束时间
+     */
+    private String endTime;
+
     public OrderModel(){
 
     }
@@ -499,5 +509,21 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

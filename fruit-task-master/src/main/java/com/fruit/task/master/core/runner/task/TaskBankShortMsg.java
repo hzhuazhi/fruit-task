@@ -1,11 +1,13 @@
 package com.fruit.task.master.core.runner.task;
 
+import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
 import com.fruit.task.master.core.model.bank.BankModel;
 import com.fruit.task.master.core.model.bank.BankShortMsgModel;
 import com.fruit.task.master.core.model.bank.BankShortMsgStrategyModel;
+import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.strategy.StrategyModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
 import com.fruit.task.master.util.ComponentUtil;
@@ -96,6 +98,8 @@ public class TaskBankShortMsg {
                         statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, "拆解金额失败：1.银行收款短信解析策略可能不完善。2.短信可能不是银行收款短信!");
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey);
                         continue;
                     }
 
@@ -105,6 +109,8 @@ public class TaskBankShortMsg {
                         statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, "匹配银行卡尾号失败：没有匹配到相对应的银行卡尾号!");
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey);
                         continue;
                     }
 
@@ -132,6 +138,94 @@ public class TaskBankShortMsg {
                 ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
             }
         }
-
     }
+
+
+
+    /**
+     * @Description: 匹配订单
+     * <p>
+     *     每秒运行一次
+     *     1.根据银行卡，金额时间去匹配订单
+     *     2.如果匹配上了，则修改订单状态
+     * </p>
+     * @author yoko
+     * @date 2019/12/6 20:25
+     */
+    @Scheduled(fixedDelay = 1000) // 每1秒执行
+    public void handle() throws Exception{
+//        log.info("----------------------------------TaskBankShortMsg.handle()----start");
+        // 策略数据：订单的支付时间
+        int invalidTimeNum = 0;
+        StrategyModel strategyInvalidTimeNumQuery = TaskMethod.assembleStrategyQuery(ServerConstant.StrategyEnum.INVALID_TIME_NUM.getStgType());
+        StrategyModel strategyInvalidTimeNumModel = ComponentUtil.strategyService.getStrategyModel(strategyInvalidTimeNumQuery, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
+        invalidTimeNum = strategyInvalidTimeNumModel.getStgNumValue();
+
+        // 获取银行短信数据-已经扩充完毕
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 3, 0, 0, 0);
+        List<BankShortMsgModel> synchroList = ComponentUtil.taskBankShortMsgService.getDataList(statusQuery);
+        for (BankShortMsgModel data : synchroList){
+            StatusModel statusModel = null;
+            try{
+                // 锁住这个数据流水
+                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_BANK_SHORT_MSG_WORK_TYPE, data.getId());
+                boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
+                if (flagLock){
+                    String startTime = DateUtil.addAndSubtractDateMinute(data.getCreateTime(), -invalidTimeNum);// 数据的创建时间减订单超时时间=特定时间的前几分中的时间
+                    String endTime = data.getCreateTime();
+                     // 查询订单
+                    OrderModel orderQuery = TaskMethod.assembleOrderQuery(0, data.getBankId(), null,0, data.getMoney(), 1, null, 1, startTime, endTime);
+                    List<OrderModel> orderList = ComponentUtil.orderService.findByCondition(orderQuery);
+                    if (orderList == null || orderList.size() <= 0){
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, "匹配订单失败：根据银行卡ID、金额、订单状态、创建时间未匹配到订单!");
+                        // 更新状态
+                        ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey);
+                        continue;
+                    }
+                    if (orderList != null && orderList.size() > 1){
+                        // 匹配到多个订单
+                        // 把订单集合的订单号汇聚成一个字符串
+                        String orderNoStr = TaskMethod.getOrderNoStr(orderList);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, "匹配订单失败：根据银行卡ID、金额、订单状态、创建时间匹配到多个订单! 订单号:" + orderNoStr);
+                        // 更新状态
+                        ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey);
+                        continue;
+                    }
+
+                    // 只匹配到一个订单号
+                    // 更新银行卡短信信息的扩充数据
+                    BankShortMsgModel bankShortMsgModelUpdate = TaskMethod.assembleBankShortMsgUpdate(data.getId(), orderList.get(0).getOrderNo(), 0, 0, null, null);
+                    ComponentUtil.bankShortMsgService.update(bankShortMsgModelUpdate);
+
+                    // 更新订单号的状态
+                    OrderModel orderUpdate = TaskMethod.assembleOrderUpdateStatus(orderList.get(0).getId(), 4);
+                    int num = ComponentUtil.orderService.update(orderUpdate);
+                    if (num > 0){
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, null);
+                    }else {
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, "更新订单号状态响应行为0!");
+                    }
+                    // 更新状态
+                    ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+                    // 解锁
+                    ComponentUtil.redisIdService.delLock(lockKey);
+                }
+
+
+//                log.info("----------------------------------TaskBankShortMsg.handle()----end");
+            }catch (Exception e){
+                log.error(String.format("this TaskBankShortMsg.handle() is error , the dataId=%s !", data.getId()));
+                e.printStackTrace();
+                // 更新此次task的状态：更新成失败：因为必填项没数据
+                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, "异常失败try!");
+                ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
+            }
+        }
+    }
+
+
 }

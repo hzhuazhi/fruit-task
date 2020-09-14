@@ -7,6 +7,7 @@ import com.fruit.task.master.core.model.bank.BankShortMsgModel;
 import com.fruit.task.master.core.model.bank.BankShortMsgStrategyModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
+import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgArrearsModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
 import com.fruit.task.master.core.model.strategy.StrategyModel;
@@ -504,6 +505,87 @@ public class TaskMethod {
         if (!StringUtils.isBlank(lastNum)){
             resBean.setLastNum(lastNum);
         }
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询订单信息的查询条件
+     * @param id - 订单主键ID
+     * @param bankId - 银行卡ID
+     * @param orderNo - 订单号
+     * @param orderType - 订单类型
+     * @param orderMoney - 订单金额
+     * @param orderStatus - 订单状态
+     * @param orderStatusStr - 订单大于等于状态
+     * @param replenishType - 补单类型
+     * @param startTime - 创建时间的开始时间
+     * @param endTime - 创建时间的结束时间
+     * @return com.fruit.task.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/14 20:54
+     */
+    public static OrderModel assembleOrderQuery(long id, long bankId, String orderNo, int orderType, String orderMoney, int orderStatus,
+                                                      String orderStatusStr, int replenishType, String startTime, String endTime){
+        OrderModel resBean = new OrderModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (bankId > 0){
+            resBean.setBankId(bankId);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (!StringUtils.isBlank(orderMoney)){
+            resBean.setOrderMoney(orderMoney);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (!StringUtils.isBlank(orderStatusStr)){
+            resBean.setOrderStatusStr(orderStatusStr);
+        }
+        if (replenishType > 0){
+            resBean.setReplenishType(replenishType);
+        }
+        if (!StringUtils.isBlank(startTime) && !StringUtils.isBlank(endTime)){
+            resBean.setStartTime(startTime);
+            resBean.setEndTime(endTime);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: 把订单集合的订单号汇聚成一个字符串
+     * @param orderList
+     * @return
+     * @author yoko
+     * @date 2020/9/14 21:21
+    */
+    public static String getOrderNoStr(List<OrderModel> orderList){
+        String str = null;
+        for (OrderModel orderModel : orderList){
+            str += orderModel.getOrderNo() + ",";
+        }
+        return str;
+    }
+
+    /**
+     * @Description: 更新订单号状态
+     * @param id - 主键ID
+     * @param orderStatus - 订单号状态
+     * @return com.fruit.task.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/14 21:26
+     */
+    public static OrderModel assembleOrderUpdateStatus(long id, int orderStatus){
+        OrderModel resBean = new OrderModel();
+        resBean.setId(id);
+        resBean.setOrderStatus(orderStatus);
         return resBean;
     }
 

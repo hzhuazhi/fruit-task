@@ -2920,6 +2920,35 @@ public class DateUtil {
 
 	}
 
+
+
+	/**
+	 * @Description: TODO(输入时间加减多少分之后的日期)
+	 * @param strDate - 时间
+	 * @param second - 秒：可以是正数，也可以是负数
+	 * @author df
+	 * @create 21:51 2018/12/6
+	 **/
+	public static String addAndSubtractDateMinute(String strDate, int minute){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = format.parse(strDate);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		if (date == null)
+			return "";
+//		System.out.println("front:" + format.format(date)); //显示输入的日期
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MINUTE, minute);
+		date = cal.getTime();
+		cal = null;
+		return format.format(date);
+
+	}
+
 	/**
 	 * @Description: TODO(系统当前时间与特定的时间相差多少分钟)
 	 * @author df
@@ -3148,6 +3177,9 @@ public class DateUtil {
 		String sb8 = "2020-08-28 16:09:52";
 		int sb9 = compareDate(sb7,new Date());
 		System.out.println("sb9:" + sb9);
+		int sb10 = 10;
+		String sb11 = addAndSubtractDateMinute(sb8, -sb10);
+		System.out.println("sb11:" + sb11);
 	}
 
 	/**

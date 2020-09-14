@@ -32,6 +32,9 @@
             <if test="orderType != null and orderType != '' " >
                 and a.order_type = #{orderType}
             </if>
+            <if test="orderMoney != null and orderMoney != '' " >
+                and a.order_money = #{orderMoney}
+            </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 and a.order_status = #{orderStatus}
             </if>
@@ -56,6 +59,10 @@
             <if test="workType != null and workType != '' " >
                 and a.work_type = #{workType}
             </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != '' " >
+                and a.create_time >= #{startTime} and a.create_time &lt;= #{endTime}
+            </if>
+
             and a.yn = 0
         </trim>
     </sql>

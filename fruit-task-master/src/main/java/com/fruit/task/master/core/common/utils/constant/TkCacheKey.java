@@ -31,5 +31,9 @@ public interface TkCacheKey {
      */
     String LOCK_BANK_SHORT_MSG = "-4";
 
+    /**
+     * LOCK-银行卡短信已经扩充完毕的数据
+     */
+    String LOCK_BANK_SHORT_MSG_WORK_TYPE = "-5";
 
 }
