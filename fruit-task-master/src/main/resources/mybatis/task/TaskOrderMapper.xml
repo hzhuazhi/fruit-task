@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fruit.task.master.core.mapper.OrderMapper">
+
+
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.bank_id,a.order_no,a.order_type,a.order_money,a.qr_code,a.out_trade_no,a.order_status,
+        a.invalid_time,a.notify_url,a.bank_name,a.bank_card,a.account_name,a.bank_code,a.mobile_card_id,
+        a.phone_num,a.account_id,a.merchant_name,a.channel_id,a.channel_name,a.replenish_type,a.work_type,
+        a.data_explain,a.remark,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
+        a.create_time,a.update_time,a.yn
+
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            <if test="orderStatus != null and orderStatus != '' " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="orderStatusStr != null and orderStatusStr != '' " >
+                and a.order_status >= 3
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                and a.invalid_time > now()
+            </if>
+            <if test="workType != null and workType != '' " >
+                and a.work_type = #{workType}
+            </if>
+            <if test="greaterThan != null and greaterThan != '' " >
+                and a.work_type > #{greaterThan}
+            </if>
+            <if test="lessThan != null and lessThan != '' " >
+                and a.work_type &lt; #{lessThan}
+            </if>
+            <if test="curday != null and curday != '' " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != null and curdayStart != '' and curdayEnd != null and curdayEnd != '' " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <if test="runNum != null and runNum != '' " >
+                and a.run_num &lt; #{runNum}
+            </if>
+            <if test="runStatus != null and runStatus != '' " >
+                and a.run_status &lt; #{runStatus}
+            </if>
+            <if test="sendNum != null and sendNum != '' " >
+                and a.send_num &lt; #{sendNum}
+            </if>
+            <if test="sendStatus != null and sendStatus != '' " >
+                and a.send_status &lt; #{sendStatus}
+            </if>
+
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+    <!-- 查询未跑的信息 -->
+    <select id="getDataList" parameterType="Object" resultType="com.fruit.task.master.core.model.order.OrderModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_order a
+        <include refid="Example_Where_Clause"/>
+        limit #{limitNum}
+    </select>
+
+    <!-- 更新信息数据的状态成功、失败的结果 -->
+    <update id="updateStatus" parameterType="Object">
+        UPDATE tb_fr_order a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="runNum != null and runNum != '' " >
+                a.run_num = a.run_num + #{runNum},
+            </if>
+            <if test="runStatus != null and runStatus != '' " >
+                a.run_status = #{runStatus},
+            </if>
+            <if test="workType != null and workType != '' " >
+                a.work_type = #{workType},
+            </if>
+            <if test="sendNum != null and sendNum != '' " >
+                a.send_num = a.send_num + #{sendNum},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' " >
+                a.send_status = #{sendStatus},
+            </if>
+            <if test="orderStatus != null and orderStatus != '' " >
+                a.order_status = #{orderStatus},
+            </if>
+            <if test="info != null and info != '' " >
+                a.data_explain = #{info},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+
+</mapper>

@@ -6,6 +6,7 @@ import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
 import com.fruit.task.master.core.service.task.TaskBankShortMsgService;
 import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
+import com.fruit.task.master.core.service.task.TaskOrderService;
 import com.fruit.task.master.util.ComponentUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +110,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private TaskBankShortMsgService taskBankShortMsgService;
 
+    @Autowired
+    private TaskOrderService taskOrderService;
+
 
 
 
@@ -150,6 +154,7 @@ public class AutowireRunner implements ApplicationRunner {
 
         ComponentUtil.taskMobileCardShortMsgService = taskMobileCardShortMsgService;
         ComponentUtil.taskBankShortMsgService = taskBankShortMsgService;
+        ComponentUtil.taskOrderService = taskOrderService;
 
         runThread = new RunThread();
         runThread.start();

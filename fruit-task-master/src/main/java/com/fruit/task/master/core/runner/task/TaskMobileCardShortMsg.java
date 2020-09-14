@@ -62,7 +62,7 @@ public class TaskMobileCardShortMsg {
 
 
         // 获取手机短信数据
-        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 0, 0, 1, 0, 0,0,null);
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 0, 0, 1, 0, 0,0,0,null);
         List<MobileCardShortMsgModel> synchroList = ComponentUtil.taskMobileCardShortMsgService.getDataList(statusQuery);
         for (MobileCardShortMsgModel data : synchroList){
             try{
@@ -75,13 +75,13 @@ public class TaskMobileCardShortMsg {
                     type = TaskMethod.screenMobileCardShortMsgType(data, shortMsgStrategyList);
                     if (type == 1){
                         // 其它短信
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 2, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 2, 0,0,null);
                     }else if (type == 2){
                         // 欠费短信
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 3, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 3, 0,0,null);
                     }else if (type == 3){
                         // 银行短信
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 4, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 4, 0,0,null);
                     }
                     if (!StringUtils.isBlank(data.getPhoneNum())){
                         MobileCardModel mobileCardQuery = TaskMethod.assembleMobileCardQuery(0, data.getPhoneNum(), 0,0,0);
@@ -104,7 +104,7 @@ public class TaskMobileCardShortMsg {
                 log.error(String.format("this TaskMobileCardShortMsg.analysisShortMsg() is error , the dataId=%s !", data.getId()));
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
-                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,"异常失败try!");
+                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,0,"异常失败try!");
                 ComponentUtil.taskMobileCardShortMsgService.updateStatus(statusModel);
             }
         }
@@ -128,7 +128,7 @@ public class TaskMobileCardShortMsg {
     public void handle() throws Exception{
 //        log.info("----------------------------------TaskMobileCardShortMsg.handle()----start");
         // 获取手机短信数据
-        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 0, 0,1,0,0,null);
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 0, 0,1,0,0,0,null);
         List<MobileCardShortMsgModel> synchroList = ComponentUtil.taskMobileCardShortMsgService.getDataList(statusQuery);
         for (MobileCardShortMsgModel data : synchroList){
             try{
@@ -140,7 +140,7 @@ public class TaskMobileCardShortMsg {
                     if (data.getDataType() == 2){
                         // 其它类型短信
                         // 直接更新成成功
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
                     }else if (data.getDataType() == 3){
                         // 欠费短信
                         if (data.getMobileCardId() != null && data.getMobileCardId() > 0){
@@ -151,15 +151,15 @@ public class TaskMobileCardShortMsg {
                                 int num = ComponentUtil.shortMsgArrearsService.add(shortMsgArrearsModel);
                                 if (num > 0){
                                     // 直接更新成成功
-                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,null);
+                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
                                 }else {
-                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"添加数据响应行为0");
+                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"添加数据响应行为0");
                                 }
                             }else {
-                                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"必要字段数据为空");
+                                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"必要字段数据为空");
                             }
                         }else {
-                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"手机卡的ID为空");
+                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"手机卡的ID为空");
                         }
                     }else if (data.getDataType() == 4){
                         // 银行短信
@@ -171,15 +171,15 @@ public class TaskMobileCardShortMsg {
                                 int num = ComponentUtil.bankShortMsgService.add(bankShortMsgModel);
                                 if (num > 0){
                                     // 直接更新成成功
-                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,null);
+                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
                                 }else {
-                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"添加数据响应行为0");
+                                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"添加数据响应行为0");
                                 }
                             }else {
-                                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"必要字段数据为空");
+                                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"必要字段数据为空");
                             }
                         }else {
-                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"手机卡的ID为空");
+                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"手机卡的ID为空");
                         }
                     }
                     // 更新状态
@@ -194,7 +194,7 @@ public class TaskMobileCardShortMsg {
                 log.error(String.format("this TaskMobileCardShortMsg.handle() is error , the dataId=%s !", data.getId()));
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
-                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0,0, 0,"异常失败try!");
+                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0,0, 0,0,"异常失败try!");
                 ComponentUtil.taskMobileCardShortMsgService.updateStatus(statusModel);
             }
         }

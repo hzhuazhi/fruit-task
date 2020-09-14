@@ -64,7 +64,7 @@ public class TaskBankShortMsg {
         lastNumKey = strategyModel.getStgValue();
 
         // 获取银行短信数据
-        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 0, 1, 0, 0, 0, 0, null);
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 0, 1, 0, 0, 0, 0, 0,null);
         List<BankShortMsgModel> synchroList = ComponentUtil.taskBankShortMsgService.getDataList(statusQuery);
         for (BankShortMsgModel data : synchroList){
             StatusModel statusModel = null;
@@ -72,7 +72,7 @@ public class TaskBankShortMsg {
             BankShortMsgStrategyModel bankShortMsgStrategyQuery = TaskMethod.assembleBankShortMsgStrategyQuery(0,0, data.getSmsNum());
             List<BankShortMsgStrategyModel> bankShortMsgStrategyList = ComponentUtil.bankShortMsgStrategyService.findByCondition(bankShortMsgStrategyQuery);
             if (bankShortMsgStrategyList == null || bankShortMsgStrategyList.size() <= 0){
-                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,"根据短信来源端口获取银行收款短信解析策略数据为空!" );
+                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,0,"根据短信来源端口获取银行收款短信解析策略数据为空!" );
                 // 更新状态
                 ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                 continue;
@@ -82,7 +82,7 @@ public class TaskBankShortMsg {
             BankModel bankQuery = TaskMethod.assembleBankQuery(0, data.getMobileCardId(), 0, 0, null, data.getSmsNum(), null);
             List<BankModel> bankList = ComponentUtil.bankService.findByCondition(bankQuery);
             if (bankList == null || bankList.size() <= 0){
-                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,"根据手机卡ID、短信来源端口获取银行集合数据为空!");
+                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,0,"根据手机卡ID、短信来源端口获取银行集合数据为空!");
                 // 更新状态
                 ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                 continue;
@@ -95,7 +95,7 @@ public class TaskBankShortMsg {
                     // 解析短信，获取收款金额
                     String money = TaskMethod.getBankMoney(bankShortMsgStrategyList, data.getSmsContent());
                     if (StringUtils.isBlank(money)){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,"拆解金额失败：1.银行收款短信解析策略可能不完善。2.短信可能不是银行收款短信!");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,0,"拆解金额失败：1.银行收款短信解析策略可能不完善。2.短信可能不是银行收款短信!");
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                         // 解锁
@@ -106,7 +106,7 @@ public class TaskBankShortMsg {
                     // 解析短信，定位银行卡ID
                     BankModel bank_matching = TaskMethod.getBankIdBySmsContent(bankList, data.getSmsContent(), lastNumKey);
                     if (bank_matching == null || bank_matching.getId() == null || bank_matching.getId() <= 0){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,"匹配银行卡尾号失败：没有匹配到相对应的银行卡尾号!");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 2, 0, 0,0,"匹配银行卡尾号失败：没有匹配到相对应的银行卡尾号!");
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                         // 解锁
@@ -118,9 +118,9 @@ public class TaskBankShortMsg {
                     BankShortMsgModel bankShortMsgModelUpdate = TaskMethod.assembleBankShortMsgUpdate(data.getId(), null, bank_matching.getId(), bank_matching.getBankTypeId(), money, bank_matching.getLastNum());
                     int num = ComponentUtil.bankShortMsgService.update(bankShortMsgModelUpdate);
                     if (num > 0){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 3, 0, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 3, 0, 0,0,null);
                     }else {
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 1, 0, 0,"更新银行短信数据扩充响应行为0!");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 1, 0, 0,0,"更新银行短信数据扩充响应行为0!");
                     }
                     // 更新状态
                     ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
@@ -134,7 +134,7 @@ public class TaskBankShortMsg {
                 log.error(String.format("this TaskBankShortMsg.analysisShortMsg() is error , the dataId=%s !", data.getId()));
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
-                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,"异常失败try!");
+                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,0,"异常失败try!");
                 ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
             }
         }
@@ -162,7 +162,7 @@ public class TaskBankShortMsg {
         invalidTimeNum = strategyInvalidTimeNumModel.getStgNumValue();
 
         // 获取银行短信数据-已经扩充完毕
-        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 3, 0, 0, 0,0,null);
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 3, 0, 0, 0,0,0,null);
         List<BankShortMsgModel> synchroList = ComponentUtil.taskBankShortMsgService.getDataList(statusQuery);
         for (BankShortMsgModel data : synchroList){
             StatusModel statusModel = null;
@@ -177,7 +177,7 @@ public class TaskBankShortMsg {
                     OrderModel orderQuery = TaskMethod.assembleOrderQuery(0, data.getBankId(), null,0, data.getMoney(), 1, null, 1, startTime, endTime);
                     List<OrderModel> orderList = ComponentUtil.orderService.findByCondition(orderQuery);
                     if (orderList == null || orderList.size() <= 0){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"匹配订单失败：根据银行卡ID、金额、订单状态、创建时间未匹配到订单!");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"匹配订单失败：根据银行卡ID、金额、订单状态、创建时间未匹配到订单!");
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                         // 解锁
@@ -188,7 +188,7 @@ public class TaskBankShortMsg {
                         // 匹配到多个订单
                         // 把订单集合的订单号汇聚成一个字符串
                         String orderNoStr = TaskMethod.getOrderNoStr(orderList);
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"匹配订单失败：根据银行卡ID、金额、订单状态、创建时间匹配到多个订单! 订单号:" + orderNoStr);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"匹配订单失败：根据银行卡ID、金额、订单状态、创建时间匹配到多个订单! 订单号:" + orderNoStr);
                         // 更新状态
                         ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
                         // 解锁
@@ -205,9 +205,9 @@ public class TaskBankShortMsg {
                     OrderModel orderUpdate = TaskMethod.assembleOrderUpdateStatus(orderList.get(0).getId(), 4);
                     int num = ComponentUtil.orderService.update(orderUpdate);
                     if (num > 0){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,null);
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
                     }else {
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,"更新订单号状态响应行为0!");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"更新订单号状态响应行为0!");
                     }
                     // 更新状态
                     ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
@@ -221,7 +221,7 @@ public class TaskBankShortMsg {
                 log.error(String.format("this TaskBankShortMsg.handle() is error , the dataId=%s !", data.getId()));
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
-                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,"异常失败try!");
+                statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, 0,0,"异常失败try!");
                 ComponentUtil.taskBankShortMsgService.updateStatus(statusModel);
             }
         }
