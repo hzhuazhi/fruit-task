@@ -1,6 +1,5 @@
 package com.fruit.task.master.core.runner.task;
 
-import com.alibaba.fastjson.JSON;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
@@ -9,7 +8,6 @@ import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgArrearsModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
-import com.fruit.task.master.core.model.strategy.StrategyModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
 import com.fruit.task.master.util.ComponentUtil;
 import com.fruit.task.master.util.TaskMethod;
@@ -57,7 +55,7 @@ public class TaskMobileCardShortMsg {
      */
     @Scheduled(fixedDelay = 1000) // 每1秒执行
     public void analysisShortMsg() throws Exception{
-//        log.info("----------------------------------TaskMobileCardShortMsg.mobileCardData()----start");
+//        log.info("----------------------------------TaskMobileCardShortMsg.analysisShortMsg()----start");
         // 获取短信的类型定位策略
         ShortMsgStrategyModel shortMsgStrategyModel = TaskMethod.assembleShortMsgStrategyByTypeQuery(ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_TWO);
         List<ShortMsgStrategyModel> shortMsgStrategyList = ComponentUtil.shortMsgStrategyService.getShortMsgStrategyList(shortMsgStrategyModel, ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO);
@@ -101,9 +99,9 @@ public class TaskMobileCardShortMsg {
                 }
 
 
-//                log.info("----------------------------------TaskMobileCardShortMsg.mobileCardData()----end");
+//                log.info("----------------------------------TaskMobileCardShortMsg.analysisShortMsg()----end");
             }catch (Exception e){
-                log.error(String.format("this TaskMobileCardShortMsg.mobileCardData() is error , the dataId=%s !", data.getId()));
+                log.error(String.format("this TaskMobileCardShortMsg.analysisShortMsg() is error , the dataId=%s !", data.getId()));
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
                 StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,2, "异常失败try!");

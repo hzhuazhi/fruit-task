@@ -4,6 +4,7 @@ import com.fruit.task.master.core.common.redis.RedisIdService;
 import com.fruit.task.master.core.common.redis.RedisService;
 import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
+import com.fruit.task.master.core.service.task.TaskBankShortMsgService;
 import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
 import com.fruit.task.master.util.ComponentUtil;
 import org.slf4j.Logger;
@@ -105,6 +106,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private TaskMobileCardShortMsgService taskMobileCardShortMsgService;
 
+    @Autowired
+    private TaskBankShortMsgService taskBankShortMsgService;
+
 
 
 
@@ -145,6 +149,7 @@ public class AutowireRunner implements ApplicationRunner {
 
 
         ComponentUtil.taskMobileCardShortMsgService = taskMobileCardShortMsgService;
+        ComponentUtil.taskBankShortMsgService = taskBankShortMsgService;
 
         runThread = new RunThread();
         runThread.start();

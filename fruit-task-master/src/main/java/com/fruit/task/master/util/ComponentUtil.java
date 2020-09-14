@@ -4,6 +4,7 @@ import com.fruit.task.master.core.common.redis.RedisIdService;
 import com.fruit.task.master.core.common.redis.RedisService;
 import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
+import com.fruit.task.master.core.service.task.TaskBankShortMsgService;
 import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
 
 /**
@@ -39,7 +40,7 @@ public class ComponentUtil {
 
 
     public static TaskMobileCardShortMsgService taskMobileCardShortMsgService;
-
+    public static TaskBankShortMsgService taskBankShortMsgService;
 
 
 }
