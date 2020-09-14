@@ -18,5 +18,13 @@ public interface TkCacheKey {
      */
     String MOBILE_CARD_PHONE_NUM = "-2";
 
+    /**
+     * LOCK-手机短信类容的task的redis
+     * <p>
+     *     正式处理逻辑运算
+     * </p>
+     */
+    String LOCK_MOBILE_CARD_SHORT_MSG_HANDLE = "-3";
+
 
 }

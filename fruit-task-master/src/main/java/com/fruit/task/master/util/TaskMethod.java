@@ -1,13 +1,17 @@
 package com.fruit.task.master.util;
+import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
+import com.fruit.task.master.core.model.bank.BankShortMsgModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
+import com.fruit.task.master.core.model.shortmsg.ShortMsgArrearsModel;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -210,6 +214,79 @@ public class TaskMethod {
         MobileCardShortMsgModel resBean = new MobileCardShortMsgModel();
         resBean.setId(id);
         resBean.setMobileCardId(mobileCardId);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装添加欠费短信
+     * @param mobileCardShortMsgModel
+     * @return
+     * @author yoko
+     * @date 2020/9/14 15:03
+    */
+    public static ShortMsgArrearsModel assembleShortMsgArrearsAdd(MobileCardShortMsgModel mobileCardShortMsgModel){
+        ShortMsgArrearsModel resBean = new ShortMsgArrearsModel();
+        if (mobileCardShortMsgModel.getMobileCardId() != null && mobileCardShortMsgModel.getMobileCardId() > 0){
+            resBean.setMobileCardId(mobileCardShortMsgModel.getMobileCardId());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getPhoneNum())){
+            resBean.setPhoneNum(mobileCardShortMsgModel.getPhoneNum());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getSmsNum())){
+            resBean.setSmsNum(mobileCardShortMsgModel.getSmsNum());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getSmsContent())){
+            resBean.setSmsContent(mobileCardShortMsgModel.getSmsContent());
+        }else {
+            return null;
+        }
+
+        resBean.setCurday(DateUtil.getDayNumber(new Date()));
+        resBean.setCurhour(DateUtil.getHour(new Date()));
+        resBean.setCurminute(DateUtil.getCurminute(new Date()));
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装添加银行短信
+     * @param mobileCardShortMsgModel
+     * @return
+     * @author yoko
+     * @date 2020/9/14 15:03
+     */
+    public static BankShortMsgModel assembleBankShortMsgAdd(MobileCardShortMsgModel mobileCardShortMsgModel){
+        BankShortMsgModel resBean = new BankShortMsgModel();
+        if (mobileCardShortMsgModel.getMobileCardId() != null && mobileCardShortMsgModel.getMobileCardId() > 0){
+            resBean.setMobileCardId(mobileCardShortMsgModel.getMobileCardId());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getPhoneNum())){
+            resBean.setPhoneNum(mobileCardShortMsgModel.getPhoneNum());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getSmsNum())){
+            resBean.setSmsNum(mobileCardShortMsgModel.getSmsNum());
+        }else {
+            return null;
+        }
+        if (!StringUtils.isBlank(mobileCardShortMsgModel.getSmsContent())){
+            resBean.setSmsContent(mobileCardShortMsgModel.getSmsContent());
+        }else {
+            return null;
+        }
+
+        resBean.setCurday(DateUtil.getDayNumber(new Date()));
+        resBean.setCurhour(DateUtil.getHour(new Date()));
+        resBean.setCurminute(DateUtil.getCurminute(new Date()));
         return resBean;
     }
 

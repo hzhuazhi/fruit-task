@@ -23,7 +23,7 @@
                 and a.short_msg_type = #{shortMsgType}
             </if>
             <if test="shortMsgTypeStr != null and shortMsgTypeStr != '' " >
-                and a.short_msg_type >= #{shortMsgTypeStr}
+                and a.short_msg_type &lt;= #{shortMsgTypeStr}
             </if>
             and a.yn = 0
         </trim>
