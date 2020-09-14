@@ -4,6 +4,7 @@ import com.fruit.task.master.core.common.redis.RedisIdService;
 import com.fruit.task.master.core.common.redis.RedisService;
 import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
+import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
 
 /**
  * 工具类
@@ -33,6 +34,12 @@ public class ComponentUtil {
     public static OrderReplenishService orderReplenishService;
     public static StatisticsClickPayService statisticsClickPayService;
     public static ShortChainService shortChainService;
+
+
+
+
+    public static TaskMobileCardShortMsgService taskMobileCardShortMsgService;
+
 
 
 }

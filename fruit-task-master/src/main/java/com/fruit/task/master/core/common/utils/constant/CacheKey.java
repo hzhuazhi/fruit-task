@@ -93,6 +93,14 @@ public interface CacheKey {
      */
     String SHORT_CHAIN = "-15";
 
+    /**
+     * 短信的类型定位策略-多个
+     * <p>
+     *     根据类型的>=来查询
+     * </p>
+     */
+    String SHORT_MSG_STRATEGY_TWO = "-16";
+
 
 
 }

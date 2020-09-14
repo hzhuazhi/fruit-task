@@ -41,7 +41,7 @@ public class MobileCardShortMsgModel extends BasePage implements Serializable {
     private String smsContent;
 
     /**
-     * 短信内容的类型：1初始化，2其它短信，3转账短信，4欠费短信，5收款短信
+     * 短信内容的类型：1初始化，2其它短信，3欠费短信，4银行短信
      */
     private Integer dataType;
 

@@ -3,6 +3,8 @@ package com.fruit.task.master.core.service;
 import com.fruit.task.master.core.common.service.BaseService;
 import com.fruit.task.master.core.model.shortmsg.ShortMsgStrategyModel;
 
+import java.util.List;
+
 /**
  * @Description 短信的类型定位策略的Service层
  * @Author yoko
@@ -19,5 +21,5 @@ public interface ShortMsgStrategyService<T> extends BaseService<T> {
      * @author yoko
      * @date 2019/11/21 19:26
      */
-    public ShortMsgStrategyModel getShortMsgStrategy(ShortMsgStrategyModel model, int isCache) throws Exception;
+    public List<ShortMsgStrategyModel> getShortMsgStrategyList(ShortMsgStrategyModel model, int isCache) throws Exception;
 }

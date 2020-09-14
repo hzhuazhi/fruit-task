@@ -67,6 +67,11 @@ public class ShortMsgStrategyModel extends BasePage implements Serializable {
      */
     private Integer yn;
 
+    /**
+     * 解析类型-SQL
+     */
+    private Integer shortMsgTypeStr;
+
     public Long getId() {
         return id;
     }
@@ -153,5 +158,13 @@ public class ShortMsgStrategyModel extends BasePage implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getShortMsgTypeStr() {
+        return shortMsgTypeStr;
+    }
+
+    public void setShortMsgTypeStr(Integer shortMsgTypeStr) {
+        this.shortMsgTypeStr = shortMsgTypeStr;
     }
 }
