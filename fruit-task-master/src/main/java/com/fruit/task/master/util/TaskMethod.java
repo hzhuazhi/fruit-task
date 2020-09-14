@@ -39,11 +39,13 @@ public class TaskMethod {
      * @param dataType - 数据类型
      * @param greaterThan - 大于
      * @param lessThan - 小于
+     * @param sendType - 发送类型
+     * @param invalidTime - 失效时间
      * @return
      * @author yoko
      * @date 2020/1/11 16:23
      */
-    public static StatusModel assembleTaskStatusQuery(int limitNum, int runType, int workType, int dataType, int greaterThan, int lessThan){
+    public static StatusModel assembleTaskStatusQuery(int limitNum, int runType, int workType, int dataType, int greaterThan, int lessThan, int sendType, String invalidTime){
         StatusModel resBean = new StatusModel();
         if (runType > 0){
             resBean.setRunStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
@@ -61,6 +63,13 @@ public class TaskMethod {
         if (lessThan > 0){
             resBean.setLessThan(lessThan);
         }
+        if (sendType > 0){
+            resBean.setSendStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+            resBean.setSendNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        }
+        if (!StringUtils.isBlank(invalidTime)){
+            resBean.setInvalidTime(invalidTime);
+        }
         resBean.setLimitNum(limitNum);
         return resBean;
     }
@@ -71,12 +80,13 @@ public class TaskMethod {
      * @param runStatus - 运行计算状态：：0初始化，1锁定，2计算失败，3计算成功
      * @param workType - 补充数据的类型：1初始化，2补充数据失败，3补充数据成功
      * @param dataType - 数据类型
+     * @param sendStatus - 发送状态：0初始化，1锁定，2计算失败，3计算成功
      * @param info - 解析说明
      * @return StatusModel
      * @author yoko
      * @date 2019/12/10 10:42
      */
-    public static StatusModel assembleTaskUpdateStatus(long id, int runStatus, int workType, int dataType, String info){
+    public static StatusModel assembleTaskUpdateStatus(long id, int runStatus, int workType, int dataType,int sendStatus, String info){
         StatusModel resBean = new StatusModel();
         resBean.setId(id);
         if (runStatus > 0){
@@ -91,6 +101,13 @@ public class TaskMethod {
         }
         if (dataType > 0){
             resBean.setDataType(dataType);
+        }
+        if (sendStatus > 0){
+            resBean.setSendStatus(sendStatus);
+            if (sendStatus == ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_TWO){
+                // 表示失败：失败则需要运行次数加一
+                resBean.setSendNum(ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE);
+            }
         }
         if (!StringUtils.isBlank(info)){
             resBean.setInfo(info);
