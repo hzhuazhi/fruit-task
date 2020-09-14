@@ -7,7 +7,7 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.bank_type_id,a.alias,a.priority,a.sms_content,a.sms_num,a.start_money,a.end_money,a.start_last_num,a.end_last_num,
+        a.id,a.bank_type_id,a.alias,a.sms_content,a.sms_num,a.start_money,a.end_money,a.start_last_num,a.end_last_num,
         a.start_balance,a.end_balance,a.remark,
         a.create_time,a.update_time,a.yn
     </sql>

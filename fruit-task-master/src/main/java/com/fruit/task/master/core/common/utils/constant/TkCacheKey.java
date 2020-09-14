@@ -26,5 +26,10 @@ public interface TkCacheKey {
      */
     String LOCK_MOBILE_CARD_SHORT_MSG_HANDLE = "-3";
 
+    /**
+     * LOCK-银行卡短信
+     */
+    String LOCK_BANK_SHORT_MSG = "-4";
+
 
 }
