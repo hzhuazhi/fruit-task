@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fruit.task.master.core.mapper.OrderMapper">
+<mapper namespace="com.fruit.task.master.core.mapper.task.TaskOrderMapper">
 
 
 
@@ -26,11 +26,8 @@
             <if test="orderStatus != null and orderStatus != '' " >
                 and a.order_status = #{orderStatus}
             </if>
-            <if test="orderStatusStr != null and orderStatusStr != '' " >
-                and a.order_status >= 3
-            </if>
             <if test="invalidTime != null and invalidTime != '' " >
-                and a.invalid_time > now()
+                and a.invalid_time &lt;= now()
             </if>
             <if test="workType != null and workType != '' " >
                 and a.work_type = #{workType}

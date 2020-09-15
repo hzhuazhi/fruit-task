@@ -36,4 +36,9 @@ public interface TkCacheKey {
      */
     String LOCK_BANK_SHORT_MSG_WORK_TYPE = "-5";
 
+    /**
+     * LOCK-失效订单
+     */
+    String LOCK_ORDER_INVALID = "-6";
+
 }
