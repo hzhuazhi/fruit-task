@@ -321,43 +321,43 @@
         UPDATE tb_fr_order a
         <trim prefix="set" suffixOverrides=",">
             <if test="bankId != null and bankId != '' " >
-                a.bank_id = #{orderStatus},
+                a.bank_id = #{bankId},
             </if>
             <if test="orderNo != null and orderNo != '' " >
-                a.order_no = #{orderStatus},
+                a.order_no = #{orderNo},
             </if>
             <if test="orderType != null and orderType != '' " >
-                a.order_type = #{orderStatus},
+                a.order_type = #{orderType},
             </if>
             <if test="orderMoney != null and orderMoney != '' " >
-                a.order_money = #{orderStatus},
+                a.order_money = #{orderMoney},
             </if>
             <if test="qrCode != null and qrCode != '' " >
-                a.qr_code = #{orderStatus},
+                a.qr_code = #{qrCode},
             </if>
             <if test="outTradeNo != null and outTradeNo != '' " >
-                a.out_trade_no = #{orderStatus},
+                a.out_trade_no = #{outTradeNo},
             </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 a.order_status = #{orderStatus},
             </if>
             <if test="invalidTime != null and invalidTime != '' " >
-                a.invalid_time = #{orderStatus},
+                a.invalid_time = #{invalidTime},
             </if>
             <if test="notifyUrl != null and notifyUrl != '' " >
-                a.notify_url = #{orderStatus},
+                a.notify_url = #{notifyUrl},
             </if>
             <if test="bankName != null and bankName != '' " >
-                a.bank_name = #{orderStatus},
+                a.bank_name = #{bankName},
             </if>
             <if test="bankCard != null and bankCard != '' " >
-                a.bank_card = #{orderStatus},
+                a.bank_card = #{bankCard},
             </if>
             <if test="accountName != null and accountName != '' " >
-                a.account_name = #{orderStatus},
+                a.account_name = #{accountName},
             </if>
             <if test="bankCode != null and bankCode != '' " >
-                a.bank_code = #{orderStatus},
+                a.bank_code = #{bankCode},
             </if>
             <if test="mobileCardId != null and mobileCardId != '' " >
                 a.mobile_card_id = #{mobileCardId},
@@ -378,16 +378,16 @@
                 a.channel_name = #{channelName},
             </if>
             <if test="replenishType != null and replenishType != '' " >
-                a.replenish_type = #{orderStatus},
+                a.replenish_type = #{replenishType},
             </if>
             <if test="workType != null and workType != '' " >
-                a.work_type = #{orderStatus},
+                a.work_type = #{workType},
             </if>
             <if test="dataExplain != null and dataExplain != '' " >
-                a.data_explain = #{orderStatus},
+                a.data_explain = #{dataExplain},
             </if>
             <if test="remark != null and remark != '' " >
-                a.remark = #{orderStatus},
+                a.remark = #{remark},
             </if>
             a.update_time = NOW(),
         </trim>
