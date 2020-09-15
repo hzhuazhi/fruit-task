@@ -590,7 +590,7 @@ public class TaskMethod {
      * @date 2020/9/14 21:21
     */
     public static String getOrderNoStr(List<OrderModel> orderList){
-        String str = null;
+        String str = "";
         for (OrderModel orderModel : orderList){
             str += orderModel.getOrderNo() + ",";
         }
@@ -766,6 +766,53 @@ public class TaskMethod {
         resBean.setOrderStatus(orderStatus);
         resBean.setReplenishType(replenishType);
         return resBean;
+    }
+
+    /**
+     * @Description: 跟新手机卡欠费状态
+     * @param id - 主键ID
+     * @param isArrears - 是否欠费：1未欠费，2欠费
+     * @return com.fruit.task.master.core.model.mobilecard.MobileCardModel
+     * @author yoko
+     * @date 2020/9/15 19:26
+     */
+    public static MobileCardModel assembleMobileCardUpdateArrears(long id, int isArrears){
+        MobileCardModel resBean = new MobileCardModel();
+        resBean.setId(id);
+        resBean.setIsArrears(isArrears);
+        return resBean;
+    }
+
+    /**
+     * @Description: 手机欠费更新要涉及的银行卡
+     * @param id - 主键ID
+     * @param involveBank - 更新涉及到的银行卡
+     * @return com.fruit.task.master.core.model.shortmsg.ShortMsgArrearsModel
+     * @author yoko
+     * @date 2020/9/15 19:35
+     */
+    public static ShortMsgArrearsModel assembleShortMsgArrearsUpdateBank(long id, String involveBank){
+        ShortMsgArrearsModel resBean = new ShortMsgArrearsModel();
+        resBean.setId(id);
+        resBean.setInvolveBank(involveBank);
+        return resBean;
+    }
+
+    /**
+     * @Description: 银行卡ID组合成字符串
+     * @param bankList
+     * @return
+     * @author yoko
+     * @date 2020/9/15 19:41
+    */
+    public static String assembleInvolveBank(List<BankModel> bankList){
+        String str = "";
+        if (bankList != null && bankList.size() > 0){
+            for (BankModel bankModel : bankList){
+                str += bankModel.getId() + ",";
+            }
+        }
+        return str;
     }
 
 }

@@ -67,7 +67,7 @@ public class TaskOrderReplenish {
                     OrderModel orderQuery = TaskMethod.assembleOrderQuery(0,0, data.getOrderNo(),0,null,0,null,0,null,null);
                     OrderModel orderModel = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
                     if (orderModel == null || orderModel.getId() == null || orderModel.getId() <= 0){
-                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"根据订单号未查到派单信息。");
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"根据订单号未查到派单信息");
                         // 更新状态
                         ComponentUtil.taskOrderReplenishService.updateStatus(statusModel);
                         // 解锁
@@ -77,7 +77,7 @@ public class TaskOrderReplenish {
 
                     if (orderModel != null && orderModel.getId() != null && orderModel.getId() > 0){
                         if (orderModel.getOrderStatus() == 4){
-                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"派单状态已经是成功状态。");
+                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"派单状态已经是成功状态");
                             // 更新状态
                             ComponentUtil.taskOrderReplenishService.updateStatus(statusModel);
                             // 解锁

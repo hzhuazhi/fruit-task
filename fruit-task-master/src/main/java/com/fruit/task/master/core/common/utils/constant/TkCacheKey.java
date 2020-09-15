@@ -61,4 +61,9 @@ public interface TkCacheKey {
      */
     String LOCK_ORDER_REPLENISH = "-10";
 
+    /**
+     * LOCK-手机欠费短信
+     */
+    String LOCK_SHORT_MSG_ARREARS = "-11";
+
 }
