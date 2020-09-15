@@ -51,4 +51,9 @@ public interface TkCacheKey {
      */
     String LOCK_ORDER_SEND = "-8";
 
+    /**
+     * LOCK-监控：监控银行卡
+     */
+    String LOCK_MONITOR_BANK = "-9";
+
 }

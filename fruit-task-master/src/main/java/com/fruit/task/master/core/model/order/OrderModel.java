@@ -214,6 +214,8 @@ public class OrderModel extends BasePage implements Serializable {
     private Integer curdayStart;
     private Integer curdayEnd;
 
+    private Integer limitNum;
+
     public OrderModel(){
 
     }
@@ -544,5 +546,13 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setCurdayEnd(Integer curdayEnd) {
         this.curdayEnd = curdayEnd;
+    }
+
+    public Integer getLimitNum() {
+        return limitNum;
+    }
+
+    public void setLimitNum(Integer limitNum) {
+        this.limitNum = limitNum;
     }
 }

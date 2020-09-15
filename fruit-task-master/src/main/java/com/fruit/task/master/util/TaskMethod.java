@@ -675,4 +675,35 @@ public class TaskMethod {
         return resBean;
     }
 
+    /**
+     * @Description: 组装监控要查询订单的查询条件
+     * @param bankId - 银行卡ID
+     * @param orderType - 订单的支付类型
+     * @param orderStatusStr - 订单状态
+     * @param curday - 创建日期
+     * @param limitNum - 查询的条数
+     * @return com.fruit.task.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/15 16:36
+     */
+    public static OrderModel assembleOrderByMonitorQuery(long bankId, int orderType, String orderStatusStr, int curday, int limitNum){
+        OrderModel resBean = new OrderModel();
+        if (bankId > 0){
+            resBean.setBankId(bankId);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (!StringUtils.isBlank(orderStatusStr)){
+            resBean.setOrderStatusStr(orderStatusStr);
+        }
+        if (curday > 0){
+            resBean.setCurday(curday);
+        }
+        if (limitNum > 0){
+            resBean.setLimitNum(limitNum);
+        }
+        return resBean;
+    }
+
 }

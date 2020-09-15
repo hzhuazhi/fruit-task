@@ -88,6 +88,8 @@ public class ServerConstant {
         ORDER_MONEY_LOCK_TIME(3,""),
         INVALID_TIME_NUM(4,""),
         LAST_NUM_KEY(5,""),
+        MONITOR_BANK_NUM(6,""),
+
 
 
 

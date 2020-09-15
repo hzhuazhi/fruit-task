@@ -6,6 +6,7 @@ import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
 import com.fruit.task.master.core.service.task.TaskBankShortMsgService;
 import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
+import com.fruit.task.master.core.service.task.TaskMonitorService;
 import com.fruit.task.master.core.service.task.TaskOrderService;
 
 /**
@@ -43,6 +44,7 @@ public class ComponentUtil {
     public static TaskMobileCardShortMsgService taskMobileCardShortMsgService;
     public static TaskBankShortMsgService taskBankShortMsgService;
     public static TaskOrderService taskOrderService;
+    public static TaskMonitorService taskMonitorService;
 
 
 }
