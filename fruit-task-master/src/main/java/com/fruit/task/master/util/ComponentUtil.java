@@ -4,10 +4,7 @@ import com.fruit.task.master.core.common.redis.RedisIdService;
 import com.fruit.task.master.core.common.redis.RedisService;
 import com.fruit.task.master.core.common.utils.constant.LoadConstant;
 import com.fruit.task.master.core.service.*;
-import com.fruit.task.master.core.service.task.TaskBankShortMsgService;
-import com.fruit.task.master.core.service.task.TaskMobileCardShortMsgService;
-import com.fruit.task.master.core.service.task.TaskMonitorService;
-import com.fruit.task.master.core.service.task.TaskOrderService;
+import com.fruit.task.master.core.service.task.*;
 
 /**
  * 工具类
@@ -45,6 +42,7 @@ public class ComponentUtil {
     public static TaskBankShortMsgService taskBankShortMsgService;
     public static TaskOrderService taskOrderService;
     public static TaskMonitorService taskMonitorService;
+    public static TaskOrderReplenishService taskOrderReplenishService;
 
 
 }
