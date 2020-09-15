@@ -706,4 +706,32 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 更新银行卡信息
+     * @param id - 主键ID
+     * @param checkStatus - 检测状态：1初始化正常，2不正常
+     * @param isArrears - 归属手机卡是否欠费：1未欠费，2欠费
+     * @param dataExplain - 数据说明：检测被限制的原因:task跑日月总限制，如果被限制，连续给出订单失败会填充被限制的原因
+     * @return com.fruit.task.master.core.model.bank.BankModel
+     * @author yoko
+     * @date 2020/9/15 16:57
+     */
+    public static BankModel assembleBankUpdate(long id, int checkStatus,int isArrears, String dataExplain){
+        BankModel resBean = new BankModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (isArrears > 0){
+            resBean.setIsArrears(isArrears);
+        }
+        if (!StringUtils.isBlank(dataExplain)){
+            resBean.setDataExplain(dataExplain);
+        }
+        return resBean;
+    }
+
 }

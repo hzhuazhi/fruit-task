@@ -4,6 +4,7 @@ import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
+import com.fruit.task.master.core.model.bank.BankModel;
 import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.strategy.StrategyModel;
 import com.fruit.task.master.util.ComponentUtil;
@@ -94,7 +95,10 @@ public class TaskMonitor {
 
                         if (checkNum != 0 && checkNum >= failNum) {
                             // 更新银行卡的状态信息
-
+                            String dataExplain = "检测：" + DateUtil.getNowPlusTime() + ",支付类型：" + payType + ",连续给出：" + failNum + "次，没有一次成功!";
+                            BankModel bankUpdate = TaskMethod.assembleBankUpdate(data, 2, 0, dataExplain);
+                            ComponentUtil.bankService.update(bankUpdate);
+                            break;
                         }
 
 
