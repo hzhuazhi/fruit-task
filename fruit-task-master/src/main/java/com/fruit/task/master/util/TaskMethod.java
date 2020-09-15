@@ -2,10 +2,7 @@ package com.fruit.task.master.util;
 import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.StringUtil;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
-import com.fruit.task.master.core.model.bank.BankModel;
-import com.fruit.task.master.core.model.bank.BankShortMsgModel;
-import com.fruit.task.master.core.model.bank.BankShortMsgStrategyModel;
-import com.fruit.task.master.core.model.bank.BankStrategyModel;
+import com.fruit.task.master.core.model.bank.*;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.order.OrderModel;
@@ -731,6 +728,26 @@ public class TaskMethod {
         if (!StringUtils.isBlank(dataExplain)){
             resBean.setDataExplain(dataExplain);
         }
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装添加银行收款纪录
+     * @param bankId - 银行卡主键ID
+     * @param orderNo - 订单号
+     * @param money - 订单金额
+     * @return com.fruit.task.master.core.model.bank.BankCollectionModel
+     * @author yoko
+     * @date 2020/9/15 17:25
+     */
+    public static BankCollectionModel assembleBankCollectionAdd(long bankId, String orderNo, String money){
+        BankCollectionModel resBean = new BankCollectionModel();
+        resBean.setBankId(bankId);
+        resBean.setOrderNo(orderNo);
+        resBean.setMoney(money);
+        resBean.setCurday(DateUtil.getDayNumber(new Date()));
+        resBean.setCurhour(DateUtil.getHour(new Date()));
+        resBean.setCurminute(DateUtil.getCurminute(new Date()));
         return resBean;
     }
 

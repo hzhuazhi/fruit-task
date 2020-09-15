@@ -6,6 +6,7 @@ import com.fruit.task.master.core.common.utils.HttpSendUtils;
 import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
+import com.fruit.task.master.core.model.bank.BankCollectionModel;
 import com.fruit.task.master.core.model.bank.BankStrategyModel;
 import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
@@ -145,6 +146,9 @@ public class TaskOrder {
                         ComponentUtil.redisService.remove(strKeyCache);
                     }
 
+                    // 添加银行收款信息
+                    BankCollectionModel bankCollectionAdd = TaskMethod.assembleBankCollectionAdd(data.getBankId(), data.getOrderNo(), data.getOrderMoney());
+                    ComponentUtil.bankCollectionService.add(bankCollectionAdd);
 
                     statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 4, 0,0,null);
                     // 更新状态

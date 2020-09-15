@@ -120,9 +120,6 @@
             <if test="orderNo != null and orderNo != '' " >
                 order_no,
             </if>
-            <if test="smsNum != null and smsNum != '' " >
-                sms_num,
-            </if>
             <if test="money != null and money != '' " >
                 money,
             </if>
@@ -140,7 +137,7 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="bankId != null and bankId != '' " >
-                <![CDATA[  #{bank_id}, ]]>
+                <![CDATA[  #{bankId}, ]]>
             </if>
             <if test="orderNo != null and orderNo != '' " >
                 <![CDATA[  #{orderNo}, ]]>
