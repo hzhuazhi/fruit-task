@@ -43,6 +43,7 @@ public class ComponentUtil {
     public static TaskOrderService taskOrderService;
     public static TaskMonitorService taskMonitorService;
     public static TaskOrderReplenishService taskOrderReplenishService;
+    public static TaskShortMsgArrearsService taskShortMsgArrearsService;
 
 
 }

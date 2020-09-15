@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fruit.task.master.core.mapper.task.TaskShortMsgArrearsMapper">
+
+
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.mobile_card_id,a.phone_num,a.sms_num,a.sms_content,a.data_type,
+        a.involve_bank,a.handle_type,a.handle_people,a.data_explain,a.remark,
+        a.curday,a.curhour,a.curminute,
+        a.run_num,a.run_status,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            <if test="runNum != null and runNum != '' " >
+                and a.run_num &lt; #{runNum}
+            </if>
+            <if test="runStatus != null and runStatus != '' " >
+                and a.run_status &lt; #{runStatus}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+    <!-- 查询未跑的欠费短信信息 -->
+    <select id="getDataList" parameterType="Object" resultType="com.fruit.task.master.core.model.shortmsg.ShortMsgArrearsModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_short_msg_arrears a
+        <include refid="Example_Where_Clause"/>
+        limit #{limitNum}
+    </select>
+
+    <!-- 更新信息数据的状态成功、失败的结果 -->
+    <update id="updateStatus" parameterType="Object">
+        UPDATE tb_fr_short_msg_arrears a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="runNum != null and runNum != '' " >
+                a.run_num = a.run_num + #{runNum},
+            </if>
+            <if test="runStatus != null and runStatus != '' " >
+                a.run_status = #{runStatus},
+            </if>
+            <if test="info != null and info != '' " >
+                a.data_explain = #{info},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+</mapper>
