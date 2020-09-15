@@ -56,4 +56,9 @@ public interface TkCacheKey {
      */
     String LOCK_MONITOR_BANK = "-9";
 
+    /**
+     * LOCK-订单补单
+     */
+    String LOCK_ORDER_REPLENISH = "-10";
+
 }

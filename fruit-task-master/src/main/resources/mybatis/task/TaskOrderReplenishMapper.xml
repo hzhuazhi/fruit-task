@@ -11,10 +11,9 @@
         a.handle_people,a.data_explain,a.remark,
         a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
         a.create_time,a.update_time,a.yn
-
     </sql>
 
-    !-- 查询条件 -->
+    <!-- 查询条件 -->
     <sql id="Example_Where_Clause">
         where 1=1
         <trim  suffixOverrides="," >

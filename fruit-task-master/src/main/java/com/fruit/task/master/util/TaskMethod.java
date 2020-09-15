@@ -751,4 +751,21 @@ public class TaskMethod {
         return resBean;
     }
 
+    /**
+     * @Description: 更新订单状态以及补单类型
+     * @param id - 主键ID
+     * @param orderStatus - 订单状态
+     * @param replenishType - 是否是补单：1初始化不是补单，2是补单
+     * @return com.fruit.task.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/14 21:26
+     */
+    public static OrderModel assembleOrderUpdateStatusAndReplenish(long id, int orderStatus, int replenishType){
+        OrderModel resBean = new OrderModel();
+        resBean.setId(id);
+        resBean.setOrderStatus(orderStatus);
+        resBean.setReplenishType(replenishType);
+        return resBean;
+    }
+
 }
