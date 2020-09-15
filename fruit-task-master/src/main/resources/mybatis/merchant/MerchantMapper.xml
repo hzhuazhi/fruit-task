@@ -220,4 +220,19 @@
     </update>
 
 
+    <!-- 更新卡商的余额 -->
+    <update id="updateBalance" parameterType="com.fruit.task.master.core.model.merchant.MerchantModel">
+        UPDATE tb_fr_merchant a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="money != null and money != '' " >
+                a.balance = a.balance + #{money},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
 </mapper>

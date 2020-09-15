@@ -18,4 +18,13 @@ public interface MerchantService<T> extends BaseService<T> {
      * @date 2020/9/5 19:21
      */
     public int updateUseStatus(MerchantModel model);
+
+    /**
+     * @Description: 更新卡商的余额
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/15 20:36
+     */
+    public int updateBalance(MerchantModel model);
 }

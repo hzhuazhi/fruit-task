@@ -45,4 +45,9 @@ public class MerchantServiceImpl<T> extends BaseServiceImpl<T> implements Mercha
     public int updateUseStatus(MerchantModel model) {
         return merchantMapper.updateUseStatus(model);
     }
+
+    @Override
+    public int updateBalance(MerchantModel model) {
+        return merchantMapper.updateBalance(model);
+    }
 }

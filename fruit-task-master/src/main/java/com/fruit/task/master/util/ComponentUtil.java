@@ -44,6 +44,7 @@ public class ComponentUtil {
     public static TaskMonitorService taskMonitorService;
     public static TaskOrderReplenishService taskOrderReplenishService;
     public static TaskShortMsgArrearsService taskShortMsgArrearsService;
+    public static TaskMerchantRechargeService taskMerchantRechargeService;
 
 
 }

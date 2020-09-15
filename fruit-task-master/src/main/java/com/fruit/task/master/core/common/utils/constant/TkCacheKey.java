@@ -66,4 +66,14 @@ public interface TkCacheKey {
      */
     String LOCK_SHORT_MSG_ARREARS = "-11";
 
+    /**
+     * LOCK-卡商充值
+     */
+    String LOCK_MERCHANT_RECHARGE = "-12";
+
+    /**
+     * LOCK-卡商的账户ID
+     */
+    String LOCK_ACCOUNT_ID = "-13";
+
 }

@@ -3,6 +3,7 @@ import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.StringUtil;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.model.bank.*;
+import com.fruit.task.master.core.model.merchant.MerchantModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.order.OrderModel;
@@ -14,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -813,6 +815,45 @@ public class TaskMethod {
             }
         }
         return str;
+    }
+
+    /**
+     * @Description: 组装查询卡商的扩展信息
+     * @param id - 主键ID
+     * @param accountId - 卡商的账号ID
+     * @param useStatus - 使用状态
+     * @return com.fruit.task.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/15 20:28
+     */
+    public static MerchantModel assembleMerchantQuery(long id, long accountId, int useStatus){
+        MerchantModel resBean = new MerchantModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (accountId > 0){
+            resBean.setAccountId(accountId);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装更新卡商的余额的方法
+     * @param id - 主键ID
+     * @param orderMoney - 订单金额
+     * @return com.fruit.task.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/15 20:41
+     */
+    public static MerchantModel assembleMerchantUpdateBalance(long id, String orderMoney){
+        MerchantModel resBean = new MerchantModel();
+        resBean.setId(id);
+        BigDecimal bd = new BigDecimal(orderMoney);
+        resBean.setMoney(bd);
+        return resBean;
     }
 
 }
