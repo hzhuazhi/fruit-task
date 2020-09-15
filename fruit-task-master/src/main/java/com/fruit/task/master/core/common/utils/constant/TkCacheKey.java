@@ -46,4 +46,9 @@ public interface TkCacheKey {
      */
     String LOCK_ORDER_SUCCESS = "-7";
 
+    /**
+     * LOCK-同步订单
+     */
+    String LOCK_ORDER_SEND = "-8";
+
 }

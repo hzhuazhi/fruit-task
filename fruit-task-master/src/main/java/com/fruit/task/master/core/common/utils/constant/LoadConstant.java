@@ -49,6 +49,12 @@ public class LoadConstant {
     @Value("${card.qrCode.url}")
     public String cardQrCodeUrl;
 
+    /**
+     * 默认数据同步地址
+     */
+    @Value("${default.notify.url}")
+    public String defaultNotifyUrl;
+
 
 
 

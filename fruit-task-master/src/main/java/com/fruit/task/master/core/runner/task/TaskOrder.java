@@ -1,6 +1,8 @@
 package com.fruit.task.master.core.runner.task;
 
+import com.alibaba.fastjson.JSON;
 import com.fruit.task.master.core.common.utils.DateUtil;
+import com.fruit.task.master.core.common.utils.HttpSendUtils;
 import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
@@ -9,6 +11,7 @@ import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
 import com.fruit.task.master.util.ComponentUtil;
 import com.fruit.task.master.util.TaskMethod;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +20,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description task:订单
@@ -106,7 +111,7 @@ public class TaskOrder {
         for (OrderModel data : synchroList){
             try{
                 // 锁住这个数据流水
-                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ORDER_INVALID, data.getId());
+                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ORDER_SUCCESS, data.getId());
                 boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
                 if (flagLock){
                     StatusModel statusModel = null;
@@ -153,6 +158,80 @@ public class TaskOrder {
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
                 StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0,0, 0,0,"异常失败try!");
+                ComponentUtil.taskOrderService.updateStatus(statusModel);
+            }
+        }
+    }
+
+
+
+    /**
+     * @Description: task：执行派单成功订单的数据同步
+     * <p>
+     *     每1每秒运行一次
+     *     1.查询出已处理的派单成功的订单数据数据。
+     *     2.根据同步地址进行数据同步。
+     * </p>
+     * @author yoko
+     * @date 2019/12/6 20:25
+     */
+//    @Scheduled(cron = "1 * * * * ?")
+    @Scheduled(fixedDelay = 1000) // 每秒执行
+    public void orderNotify() throws Exception{
+//        log.info("----------------------------------TaskOrder.orderNotify()----start");
+
+        // 获取已成功的订单数据，并且为同步给下游的数据
+        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 0, 0, 0, 0, 0,1,0,null);
+        List<OrderModel> synchroList = ComponentUtil.taskOrderService.getOrderNotifyList(statusQuery);
+        for (OrderModel data : synchroList){
+            try{
+                // 锁住这个数据流水
+                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ORDER_SEND, data.getId());
+                boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
+                if (flagLock){
+                    StatusModel statusModel = null;
+                    // 进行数据同步
+
+//                    String sendData = "total_amount=" + data.getOrderMoney() + "&" + "out_trade_no=" + data.getOutTradeNo() + "&" + "trade_status=" + 1
+//                            + "&" + "trade_no=" + data.getOrderNo() + "&" + "trade_time=" + data.getCreateTime();
+                    Map<String, Object> sendMap = new HashMap<>();
+                    sendMap.put("total_amount", data.getOrderMoney());
+                    sendMap.put("pay_amount", data.getOrderMoney());
+                    sendMap.put("out_trade_no", data.getOutTradeNo());
+                    sendMap.put("trade_status", 1);
+                    sendMap.put("trade_no", data.getOrderNo());
+                    sendMap.put("trade_time", data.getCreateTime());
+
+                    String sendUrl = "";
+                    if (!StringUtils.isBlank(data.getNotifyUrl())){
+                        sendUrl = data.getNotifyUrl();
+                    }else {
+                        sendUrl = ComponentUtil.loadConstant.defaultNotifyUrl;
+                    }
+//                    sendUrl = "http://localhost:8085/pay/data/fine";
+//                    String resp = HttpSendUtils.sendGet(sendUrl + "?" + URLEncoder.encode(sendData,"UTF-8"), null, null);
+//                    String resp = HttpSendUtils.sendGet(sendUrl + "?" + sendData, null, null);
+                    String resp = HttpSendUtils.sendPostAppJson(sendUrl , JSON.toJSONString(sendMap));
+                    if (resp.indexOf("ok") > -1){
+                        // 成功
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 3,0,null);
+                    }else {
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 2,0,null);
+                    }
+
+
+                    // 更新状态
+                    ComponentUtil.taskOrderService.updateStatus(statusModel);
+                    // 解锁
+                    ComponentUtil.redisIdService.delLock(lockKey);
+                }
+
+//                log.info("----------------------------------TaskOrder.orderNotify()----end");
+            }catch (Exception e){
+                log.error(String.format("this TaskOrder.orderNotify() is error , the dataId=%s !", data.getId()));
+                e.printStackTrace();
+                // 更新此次task的状态：更新成失败：因为ERROR
+                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 2,0,null);
                 ComponentUtil.taskOrderService.updateStatus(statusModel);
             }
         }

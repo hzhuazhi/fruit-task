@@ -32,4 +32,13 @@ public interface TaskOrderMapper<T> extends BaseDao<T> {
      * @date 2020/1/11 16:30
      */
     public int updateStatus(Object obj);
+
+    /**
+     * @Description: 获取要同步给下游的订单数据
+     * @param obj
+     * @return
+     * @author yoko
+     * @date 2020/6/8 17:38
+     */
+    public List<OrderModel> getOrderNotifyList(Object obj);
 }

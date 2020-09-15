@@ -121,5 +121,23 @@
     </update>
 
 
+    <!-- 获取要同步给下游的订单数据 -->
+    <select id="getOrderNotifyList" parameterType="Object" resultType="com.fruit.task.master.core.model.order.OrderModel">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fr_order a
+        where 1=1
+        and a.order_status = 4
+        and a.run_status = 3
+        <if test="sendNum != null and sendNum != '' " >
+            and a.send_num &lt; #{sendNum}
+        </if>
+        <if test="sendStatus != null and sendStatus != '' " >
+            and a.send_status &lt; #{sendStatus}
+        </if>
+        limit #{limitNum}
+    </select>
+
+
 
 </mapper>
