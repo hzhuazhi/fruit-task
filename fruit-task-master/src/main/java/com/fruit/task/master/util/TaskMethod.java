@@ -5,6 +5,7 @@ import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.model.bank.BankModel;
 import com.fruit.task.master.core.model.bank.BankShortMsgModel;
 import com.fruit.task.master.core.model.bank.BankShortMsgStrategyModel;
+import com.fruit.task.master.core.model.bank.BankStrategyModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.order.OrderModel;
@@ -611,6 +612,30 @@ public class TaskMethod {
         OrderModel resBean = new OrderModel();
         resBean.setId(id);
         resBean.setOrderStatus(orderStatus);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询银行放量策略的查询条件
+     * @param id - 主键ID
+     * @param bankId - 银行卡ID
+     * @param useStatus - 使用状态
+     * @return com.fruit.task.master.core.model.bank.BankStrategyModel
+     * @author yoko
+     * @date 2020/9/15 10:29
+     */
+    public static BankStrategyModel assembleBankStrategyQuery(long id, long bankId, int useStatus){
+        BankStrategyModel resBean = new BankStrategyModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (bankId > 0){
+            resBean.setBankId(bankId);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
         return resBean;
     }
 
