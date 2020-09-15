@@ -211,6 +211,9 @@ public class OrderModel extends BasePage implements Serializable {
      */
     private String endTime;
 
+    private Integer curdayStart;
+    private Integer curdayEnd;
+
     public OrderModel(){
 
     }
@@ -525,5 +528,21 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getCurdayStart() {
+        return curdayStart;
+    }
+
+    public void setCurdayStart(Integer curdayStart) {
+        this.curdayStart = curdayStart;
+    }
+
+    public Integer getCurdayEnd() {
+        return curdayEnd;
+    }
+
+    public void setCurdayEnd(Integer curdayEnd) {
+        this.curdayEnd = curdayEnd;
     }
 }

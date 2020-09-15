@@ -50,6 +50,13 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
     }
 
 
+    @Override
+    public int countOrder(OrderModel model) {
+        return orderMapper.countOrder(model);
+    }
 
-
+    @Override
+    public String sumOrderMoney(OrderModel model) {
+        return orderMapper.sumOrderMoney(model);
+    }
 }

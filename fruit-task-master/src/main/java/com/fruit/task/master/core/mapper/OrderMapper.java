@@ -22,4 +22,28 @@ public interface OrderMapper<T> extends BaseDao<T> {
      */
     public int getOrderStatus(OrderModel model);
 
+    /**
+     * @Description: 根据条件查询给出订单的次数
+     * <p>
+     *     目前用到：银行卡成功的次数（根据银行卡、支付类型、日期计算）
+     * </p>
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/15 10:39
+    */
+    public int countOrder(OrderModel model);
+
+    /**
+     * @Description: 根据条件查询成功金额
+     * <p>
+     *     目前用到：银行卡的成功金额（根据银行卡、支付类型、日期计算）
+     * </p>
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/15 10:41
+    */
+    public String sumOrderMoney(OrderModel model);
+
 }

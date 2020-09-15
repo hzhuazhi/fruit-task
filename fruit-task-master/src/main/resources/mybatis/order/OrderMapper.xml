@@ -59,6 +59,12 @@
             <if test="workType != null and workType != '' " >
                 and a.work_type = #{workType}
             </if>
+            <if test="curday != null and curday != '' " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != null and curdayStart != '' and curdayEnd != null and curdayEnd != '' " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
             <if test="startTime != null and startTime != '' and endTime != null and endTime != '' " >
                 and a.create_time >= #{startTime} and a.create_time &lt;= #{endTime}
             </if>
@@ -411,6 +417,19 @@
         and a.yn = 0
     </select>
 
+
+    <!-- 根据条件查询给出订单的次数-->
+    <select id="countOrder" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fr_order a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 根据条件查询成功金额-->
+    <select id="sumOrderMoney" parameterType="Object" resultType="java.lang.String">
+        select ifnull(sum(convert(a.order_money,decimal(19,2))), '0.00') as money from tb_fr_order a
+        <include refid="Example_Where_Clause"/>
+    </select>
 
 
 

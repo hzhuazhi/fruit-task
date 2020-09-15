@@ -1,5 +1,6 @@
 package com.fruit.task.master.core.runner.task;
 
+import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
 import com.fruit.task.master.core.model.bank.BankStrategyModel;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,7 +96,10 @@ public class TaskOrder {
     @Scheduled(fixedDelay = 1000) // 每1秒执行
     public void success() throws Exception{
 //        log.info("----------------------------------TaskOrder.success()----start");
-        // 获取已失效订单数据
+        int curday = DateUtil.getDayNumber(new Date());// 当天
+        int curdayStart = DateUtil.getMinMonthDate();// 月初
+        int curdayEnd = DateUtil.getMaxMonthDate();// 月末
+        // 获取已成功订单数据
         StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 0, 0, 0, 0,0,4,null);
         List<OrderModel> synchroList = ComponentUtil.taskOrderService.getDataList(statusQuery);
         for (OrderModel data : synchroList){
@@ -110,6 +115,18 @@ public class TaskOrder {
                     BankStrategyModel bankStrategyModel = (BankStrategyModel)ComponentUtil.bankStrategyService.findByObject(bankStrategyQuery);
                     if (bankStrategyModel != null && bankStrategyModel.getId() != null && bankStrategyModel.getId() > 0){
                         // 计算银行卡的放量限制
+
+                        // 获取日成功给出的次数
+                        OrderModel orderByDayNumQuery = TaskMethod.assembleOrderByLimitQuery(data.getBankId(), data.getOrderType(), 4, curday, 0, 0);
+                        int dayNum = ComponentUtil.orderService.countOrder(orderByDayNumQuery);
+
+                        // 获取日成功给出的金额
+                        OrderModel orderByDayMoneyQuery = TaskMethod.assembleOrderByLimitQuery(data.getBankId(), data.getOrderType(), 4, curday, 0, 0);
+                        String dayMoney = ComponentUtil.orderService.sumOrderMoney(orderByDayMoneyQuery);
+
+                        // 获取月成功给出的金额
+                        OrderModel orderByMonthMoneyQuery = TaskMethod.assembleOrderByLimitQuery(data.getBankId(), data.getOrderType(), 4, 0, curdayStart, curdayEnd);
+                        String monthMoney = ComponentUtil.orderService.sumOrderMoney(orderByMonthMoneyQuery);
 
                     }
 

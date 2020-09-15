@@ -639,4 +639,40 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 组装查询订单信息来限制银行卡的查询条件
+     * @param bankId - 银行卡ID
+     * @param orderType - 支付类型
+     * @param orderStatus - 订单状态
+     * @param curday - 创建日期
+     * @param curdayStart - 开始日期
+     * @param curdayEnd - 结束日期
+     * @return com.fruit.task.master.core.model.order.OrderModel
+     * @author yoko
+     * @date 2020/9/15 10:58
+     */
+    public static OrderModel assembleOrderByLimitQuery(long bankId, int orderType, int orderStatus, int curday, int curdayStart, int curdayEnd){
+        OrderModel resBean = new OrderModel();
+        if (bankId > 0){
+            resBean.setBankId(bankId);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (curday > 0){
+            resBean.setCurday(curday);
+        }
+        if (curdayStart > 0){
+            resBean.setCurdayStart(curdayStart);
+        }
+        if (curdayEnd > 0){
+            resBean.setCurdayEnd(curdayEnd);
+        }
+        return resBean;
+    }
+
 }
