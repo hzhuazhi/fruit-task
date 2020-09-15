@@ -1614,6 +1614,10 @@ public class StringUtil {
 		System.out.println("strAdd:" + strAdd);
 		String sb2 = getBigDecimalDivide("10002.00", "89900.00");
 		System.out.println("sb2:" + sb2);
+		String sb3 = "1000.00";
+		String sb4 = "11110.00";
+		boolean flag = StringUtil.getBigDecimalSubtract(sb3, sb4);
+		System.out.println("flag:" + flag);
 	}
 
 }

@@ -3135,6 +3135,19 @@ public class DateUtil {
 		return res;
 	}
 
+	/**
+	 * @Description: 当前系统时间与月末相差多少天
+	 * @return
+	 * @author yoko
+	 * @date 2020/9/15 14:22
+	*/
+	public static int differByEndMonth(){
+		Calendar c = Calendar.getInstance();
+		int d = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int now = c.get(Calendar.DAY_OF_MONTH);
+		return (d - now);
+	}
+
 
 
 	public static void main(String[] args) throws Exception{
@@ -3180,6 +3193,12 @@ public class DateUtil {
 		int sb10 = 10;
 		String sb11 = addAndSubtractDateMinute(sb8, -sb10);
 		System.out.println("sb11:" + sb11);
+
+		int sb12 = getMaxMonthDate();
+		System.out.println("sb12:" + sb12);
+
+		int sb13 = differByEndMonth();
+		System.out.println("sb13:" + sb13);
 	}
 
 	/**

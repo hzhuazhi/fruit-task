@@ -1,6 +1,7 @@
 package com.fruit.task.master.core.runner.task;
 
 import com.fruit.task.master.core.common.utils.DateUtil;
+import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
 import com.fruit.task.master.core.model.bank.BankStrategyModel;
@@ -128,6 +129,15 @@ public class TaskOrder {
                         OrderModel orderByMonthMoneyQuery = TaskMethod.assembleOrderByLimitQuery(data.getBankId(), data.getOrderType(), 4, 0, curdayStart, curdayEnd);
                         String monthMoney = ComponentUtil.orderService.sumOrderMoney(orderByMonthMoneyQuery);
 
+                        // check银行卡的放量限制：如果超过策略的放量，则会存redis缓存
+                        ComponentUtil.bankStrategyService.bankStrategyLimit(bankStrategyModel, data.getOrderType(), dayNum, dayMoney, monthMoney);
+                    }
+
+                    // 判断是否是补单，不是补单则需要释放银行卡的挂单金额
+                    if (data.getReplenishType() == 1){
+                        // 删除redis：删除银行卡此金额的挂单
+                        String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.BANK_ORDER_MONEY, data.getBankId(), data.getOrderMoney());
+                        ComponentUtil.redisService.remove(strKeyCache);
                     }
 
 
