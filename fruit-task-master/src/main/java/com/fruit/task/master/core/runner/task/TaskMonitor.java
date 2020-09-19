@@ -44,7 +44,7 @@ public class TaskMonitor {
     /**
      * @Description: 检测派发的订单中的银行卡收款是否异常
      * <p>
-     *     每1分钟运行一次
+     *     每30秒执行运行一次
      *     1.查询今日所有给出去重复后的银行卡ID集合
      *     2.for循环查询每个银行卡给出的次数
      *     3.根据策略部署数据，进行次数比较，如果给码次数已经超过部署的策略的给码次数，则修改银行卡的状态
@@ -53,8 +53,8 @@ public class TaskMonitor {
      * @date 2019/12/6 20:25
      */
 //    @Scheduled(cron = "5 * * * * ?")
-    @Scheduled(fixedDelay = 1000) // 每1分钟执行
-//    @Scheduled(fixedDelay = 60000) // 每1分钟执行
+//    @Scheduled(fixedDelay = 1000) // 每1分钟执行
+    @Scheduled(fixedDelay = 30000) // 每30秒执行
     public void monitorBank() throws Exception{
 //        log.info("----------------------------------TaskMonitor.monitorBank()----start");
         int curday = DateUtil.getDayNumber(new Date());
