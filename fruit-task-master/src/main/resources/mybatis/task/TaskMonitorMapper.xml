@@ -60,6 +60,7 @@
         <include refid="Base_Column_List_Order" />
         from tb_fr_order a
         <include refid="Example_Where_Clause_Order"/>
+        order by a.create_time desc
         limit #{limitNum}
     </select>
 

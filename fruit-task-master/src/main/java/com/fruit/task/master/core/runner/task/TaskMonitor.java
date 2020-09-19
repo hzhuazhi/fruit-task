@@ -53,8 +53,8 @@ public class TaskMonitor {
      * @date 2019/12/6 20:25
      */
 //    @Scheduled(cron = "5 * * * * ?")
-//    @Scheduled(fixedDelay = 1000) // 每1分钟执行
-    @Scheduled(fixedDelay = 60000) // 每1分钟执行
+    @Scheduled(fixedDelay = 1000) // 每1分钟执行
+//    @Scheduled(fixedDelay = 60000) // 每1分钟执行
     public void monitorBank() throws Exception{
 //        log.info("----------------------------------TaskMonitor.monitorBank()----start");
         int curday = DateUtil.getDayNumber(new Date());
