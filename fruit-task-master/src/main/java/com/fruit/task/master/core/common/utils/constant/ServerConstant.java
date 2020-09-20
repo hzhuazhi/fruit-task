@@ -89,6 +89,7 @@ public class ServerConstant {
         INVALID_TIME_NUM(4,""),
         LAST_NUM_KEY(5,""),
         MONITOR_BANK_NUM(6,""),
+        SHORT_CHAIN_MONEY(7,""),
 
 
 
