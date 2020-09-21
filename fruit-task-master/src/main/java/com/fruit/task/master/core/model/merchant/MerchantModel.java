@@ -28,16 +28,25 @@ public class MerchantModel extends BasePage implements Serializable {
      */
     private String alias;
 
+    /**
+     * 总额：总共跑量的金额
+     */
+    private String totalMoney;
 
     /**
-     * 余额
+     * 保底金额：卡商在我放至少要留有多少钱，才放量：保证金
+     */
+    private String leastMoney;
+
+    /**
+     * 余额：跑量的金额累加，渠道提现的金额扣减
      */
     private String balance;
 
     /**
-     * 保底金额
+     * 锁定金额
      */
-    private String leastMoney;
+    private String lockMoney;
 
     /**
      * 卡商类型：1我方卡商，2第三方卡商
@@ -194,5 +203,21 @@ public class MerchantModel extends BasePage implements Serializable {
 
     public void setAcContacts(String acContacts) {
         this.acContacts = acContacts;
+    }
+
+    public String getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(String totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public String getLockMoney() {
+        return lockMoney;
+    }
+
+    public void setLockMoney(String lockMoney) {
+        this.lockMoney = lockMoney;
     }
 }

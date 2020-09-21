@@ -5,7 +5,7 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.account_id,a.alias,a.balance,a.least_money,a.merchant_type,
+        a.id,a.account_id,a.alias,a.total_money,a.least_money,a.balance,a.lock_money,a.merchant_type,
         a.remark,a.use_status,
         a.create_time,a.update_time,a.yn,
         b.ac_name,b.ac_contacts
@@ -120,11 +120,17 @@
             <if test="alias != null and alias != '' " >
                 alias,
             </if>
-            <if test="balance != null and balance != '' " >
-                balance,
+            <if test="totalMoney != null and totalMoney != '' " >
+                total_money,
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 least_money,
+            </if>
+            <if test="balance != null and balance != '' " >
+                balance,
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                lock_money,
             </if>
             <if test="merchantType != null and merchantType != '' " >
                 merchant_type,
@@ -145,11 +151,17 @@
             <if test="alias != null and alias != '' " >
                 <![CDATA[  #{alias}, ]]>
             </if>
-            <if test="balance != null and balance != '' " >
-                <![CDATA[  #{balance}, ]]>
+            <if test="totalMoney != null and totalMoney != '' " >
+                <![CDATA[  #{totalMoney}, ]]>
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 <![CDATA[  #{leastMoney}, ]]>
+            </if>
+            <if test="balance != null and balance != '' " >
+                <![CDATA[  #{balance}, ]]>
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                <![CDATA[  #{lockMoney}, ]]>
             </if>
             <if test="merchantType != null and merchantType != '' " >
                 <![CDATA[  #{merchantType}, ]]>
@@ -174,11 +186,17 @@
             <if test="alias != null and alias != '' " >
                 a.alias = #{alias},
             </if>
-            <if test="balance != null and balance != '' " >
-                a.balance = #{balance},
+            <if test="totalMoney != null and totalMoney != '' " >
+                a.total_money = #{totalMoney},
             </if>
             <if test="leastMoney != null and leastMoney != '' " >
                 a.least_money = #{leastMoney},
+            </if>
+            <if test="balance != null and balance != '' " >
+                a.balance = #{balance},
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                a.lock_money = #{lockMoney},
             </if>
             <if test="merchantType != null and merchantType != '' " >
                 a.merchant_type = #{merchantType},
