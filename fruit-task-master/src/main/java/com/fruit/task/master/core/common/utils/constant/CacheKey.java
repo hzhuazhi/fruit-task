@@ -101,6 +101,9 @@ public interface CacheKey {
      */
     String SHORT_MSG_STRATEGY_TWO = "-16";
 
-
+    /**
+     * 锁定：锁住卡商账号的主键ID，在更新卡商金额的时候
+     */
+    String LOCK_MERCHANT_MONEY = "-17";
 
 }

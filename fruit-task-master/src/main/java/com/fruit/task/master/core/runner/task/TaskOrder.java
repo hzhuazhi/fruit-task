@@ -8,6 +8,7 @@ import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
 import com.fruit.task.master.core.model.bank.BankCollectionModel;
 import com.fruit.task.master.core.model.bank.BankStrategyModel;
+import com.fruit.task.master.core.model.merchant.MerchantModel;
 import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
 import com.fruit.task.master.util.ComponentUtil;
@@ -139,18 +140,40 @@ public class TaskOrder {
                         ComponentUtil.bankStrategyService.bankStrategyLimit(bankStrategyModel, data.getOrderType(), dayNum, dayMoney, monthMoney);
                     }
 
-                    // 判断是否是补单，不是补单则需要释放银行卡的挂单金额
-                    if (data.getReplenishType() == 1){
-                        // 删除redis：删除银行卡此金额的挂单
-                        String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.BANK_ORDER_MONEY, data.getBankId(), data.getOrderMoney());
-                        ComponentUtil.redisService.remove(strKeyCache);
+
+                    // 组装银行收款信息
+                    BankCollectionModel bankCollectionAdd = TaskMethod.assembleBankCollectionAdd(data.getBankId(), data.getOrderNo(), data.getOrderMoney());
+
+                    // 组装卡商金额更新
+                    MerchantModel merchantUpdate = TaskMethod.assembleMerchantUpdateMoney(data.getAccountId(), data.getOrderMoney());
+                    // 锁住这个卡商
+                    String lockKey_accountId = CachedKeyUtils.getCacheKey(CacheKey.LOCK_MERCHANT_MONEY, data.getAccountId());
+                    boolean flagLock_accountId = ComponentUtil.redisIdService.lock(lockKey_accountId);
+                    if (flagLock_accountId){
+
+                        // 执行订单成功的逻辑
+                        boolean flag_handle = ComponentUtil.taskOrderService.handleSuccessOrder(bankCollectionAdd, merchantUpdate);
+                        if (flag_handle){
+
+                            // 判断是否是补单，不是补单则需要释放银行卡的挂单金额
+                            if (data.getReplenishType() == 1){
+                                // 删除redis：删除银行卡此金额的挂单
+                                String strKeyCache = CachedKeyUtils.getCacheKey(CacheKey.BANK_ORDER_MONEY, data.getBankId(), data.getOrderMoney());
+                                ComponentUtil.redisService.remove(strKeyCache);
+                            }
+
+                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
+                        }else {
+                            statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"事务处理出错!");
+                        }
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey_accountId);
+                    }else{
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"卡商被其它任务锁住!");
                     }
 
-                    // 添加银行收款信息
-                    BankCollectionModel bankCollectionAdd = TaskMethod.assembleBankCollectionAdd(data.getBankId(), data.getOrderNo(), data.getOrderMoney());
-                    ComponentUtil.bankCollectionService.add(bankCollectionAdd);
 
-                    statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 4, 0,0,null);
+
                     // 更新状态
                     ComponentUtil.taskOrderService.updateStatus(statusModel);
                     // 解锁

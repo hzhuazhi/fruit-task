@@ -856,4 +856,20 @@ public class TaskMethod {
         return resBean;
     }
 
+    /**
+     * @Description: 组装更新卡商的金额的方法
+     * @param accountId - 卡商账号ID
+     * @param orderMoney - 订单金额
+     * @return com.fruit.task.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/15 20:41
+     */
+    public static MerchantModel assembleMerchantUpdateMoney(long accountId, String orderMoney){
+        MerchantModel resBean = new MerchantModel();
+        resBean.setAccountId(accountId);
+        BigDecimal bd = new BigDecimal(orderMoney);
+        resBean.setMoney(bd);
+        return resBean;
+    }
+
 }

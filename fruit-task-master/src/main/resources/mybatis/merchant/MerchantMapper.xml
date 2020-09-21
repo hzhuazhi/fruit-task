@@ -253,4 +253,19 @@
     </update>
 
 
+    <!-- 更新用户的总金额以及余额 -->
+    <update id="updateMoney" parameterType="com.fruit.task.master.core.model.merchant.MerchantModel">
+        UPDATE tb_fr_merchant a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="money != null and money != '' " >
+                a.total_money = a.total_money + #{money},
+            </if>
+            <if test="money != null and money != '' " >
+                a.balance = a.balance + #{money},
+            </if>
+        </trim>
+        where 1=1
+        and a.account_id = #{accountId}
+        and a.yn = 0
+    </update>
 </mapper>

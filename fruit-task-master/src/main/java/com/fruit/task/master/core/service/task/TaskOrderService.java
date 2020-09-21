@@ -1,6 +1,8 @@
 package com.fruit.task.master.core.service.task;
 
 import com.fruit.task.master.core.common.service.BaseService;
+import com.fruit.task.master.core.model.bank.BankCollectionModel;
+import com.fruit.task.master.core.model.merchant.MerchantModel;
 import com.fruit.task.master.core.model.order.OrderModel;
 
 import java.util.List;
@@ -39,4 +41,7 @@ public interface TaskOrderService<T> extends BaseService<T> {
      * @date 2020/6/8 17:38
      */
     public List<OrderModel> getOrderNotifyList(Object obj);
+
+
+    public boolean handleSuccessOrder(BankCollectionModel bankCollectionModel, MerchantModel merchantUpdateMoney) throws Exception;
 }
