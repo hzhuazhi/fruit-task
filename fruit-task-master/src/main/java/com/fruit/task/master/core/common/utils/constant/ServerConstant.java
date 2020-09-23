@@ -90,6 +90,9 @@ public class ServerConstant {
         LAST_NUM_KEY(5,""),
         MONITOR_BANK_NUM(6,""),
         SHORT_CHAIN_MONEY(7,""),
+        ISSUE_DISTRIBUTION_NUM(8,""),
+        ISSUE_DISTRIBUTION_TIME(9,""),
+
 
 
 

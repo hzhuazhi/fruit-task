@@ -30,6 +30,12 @@
             <if test="useStatus != null and useStatus != '' " >
                 and a.use_status = #{useStatus}
             </if>
+            <if test="accountIdList != null and accountIdList.size()>0">
+                and a.account_id not in
+                <foreach item="item" index="index" collection="accountIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             and a.yn = 0
             and b.id is not null
         </trim>

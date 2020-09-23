@@ -166,6 +166,11 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      */
     private String invalidTimeStr;
 
+    /**
+     * SQL-查询
+     */
+    private String operateStatusStr;
+
     public Long getId() {
         return id;
     }
@@ -420,5 +425,13 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setInvalidTimeStr(String invalidTimeStr) {
         this.invalidTimeStr = invalidTimeStr;
+    }
+
+    public String getOperateStatusStr() {
+        return operateStatusStr;
+    }
+
+    public void setOperateStatusStr(String operateStatusStr) {
+        this.operateStatusStr = operateStatusStr;
     }
 }

@@ -57,6 +57,9 @@
             <if test="invalidTimeStr != null and invalidTimeStr != '' " >
                 and a.invalid_time &lt;= now()
             </if>
+            <if test="operateStatusStr != null and operateStatusStr != '' " >
+                and a.operate_status &lt;= 3
+            </if>
 
             and a.yn = 0
         </trim>

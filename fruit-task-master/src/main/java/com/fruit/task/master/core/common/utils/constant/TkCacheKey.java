@@ -76,4 +76,9 @@ public interface TkCacheKey {
      */
     String LOCK_ACCOUNT_ID = "-13";
 
+    /**
+     * LOCK-下发-分配操作
+     */
+    String LOCK_ISSUE_DISTRIBUTION = "-14";
+
 }

@@ -3,7 +3,9 @@ import com.fruit.task.master.core.common.utils.DateUtil;
 import com.fruit.task.master.core.common.utils.StringUtil;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.model.bank.*;
+import com.fruit.task.master.core.model.issue.IssueModel;
 import com.fruit.task.master.core.model.merchant.MerchantModel;
+import com.fruit.task.master.core.model.merchant.MerchantRechargeModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardModel;
 import com.fruit.task.master.core.model.mobilecard.MobileCardShortMsgModel;
 import com.fruit.task.master.core.model.order.OrderModel;
@@ -869,6 +871,151 @@ public class TaskMethod {
         resBean.setAccountId(accountId);
         BigDecimal bd = new BigDecimal(orderMoney);
         resBean.setMoney(bd);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询下发的查询条件
+     * @param limitNum
+     * @param runType
+     * @param sendType
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param ascriptionType - 订单分配归属类型：1归属卡商，2归属平台
+     * @param isDistribution - 是否已分配完毕归属：1初始化/未分配，2已分配
+     * @param isComplete - 是否已归集完毕：1初始化/未归集完毕，2已归集完毕；此状态：是归属类型属于平台方，平台方需要向卡商发布充值订单，发布完毕，如果卡商都已经充值完毕到我方卡，则修改此状态，修改成归集完毕的状态
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param whereCheckStatus - SQL查询条件 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @return com.hz.fruit.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/23 15:03
+     */
+    public static IssueModel assembleIssueQuery(int limitNum, int runType, int sendType, int orderStatus, int ascriptionType, int isDistribution, int isComplete, int checkStatus, int whereCheckStatus){
+        IssueModel resBean = new IssueModel();
+        if (runType > 0){
+            resBean.setRunStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+            resBean.setRunNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        }
+        if (sendType > 0){
+            resBean.setSendStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+            resBean.setSendNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (ascriptionType > 0){
+            resBean.setAscriptionType(ascriptionType);
+        }
+        if (isDistribution > 0){
+            resBean.setIsDistribution(isDistribution);
+        }
+        if (isComplete > 0){
+            resBean.setIsComplete(isComplete);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (whereCheckStatus > 0){
+            resBean.setWhereCheckStatus(whereCheckStatus);
+        }
+        resBean.setLimitNum(limitNum);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询卡商充值的信息
+     * @param id - 主键ID
+     * @param accountId - 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
+     * @param orderNo - 订单号
+     * @param orderType - 订单类型：1预付款订单，2平台发起订单，3下发订单
+     * @param issueOrderNo - 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param operateStatus - 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
+     * @param isSynchro - 是否需要数据同步：1不需要同步，2需要同步
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param checkInfo - 审核失败缘由，审核失败的原因
+    * @param invalidTime
+     * @return com.hz.fruit.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/23 17:16
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeQuery(long id, long accountId, String orderNo, int orderType, String issueOrderNo,
+                                                                      int orderStatus, int operateStatus,
+                                                                      int isSynchro, int checkStatus, String checkInfo, String invalidTime, String operateStatusStr){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (accountId > 0){
+            resBean.setAccountId(accountId);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (!StringUtils.isBlank(issueOrderNo)){
+            resBean.setIssueOrderNo(issueOrderNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (operateStatus > 0){
+            resBean.setOperateStatus(operateStatus);
+        }
+        if (isSynchro > 0){
+            resBean.setIsSynchro(isSynchro);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(checkInfo)){
+            resBean.setCheckInfo(checkInfo);
+        }
+        if (!StringUtils.isBlank(invalidTime)){
+            resBean.setInvalidTime(invalidTime);
+        }
+        if (!StringUtils.isBlank(operateStatusStr)){
+            resBean.setOperateStatusStr(operateStatusStr);
+        }
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装查询卡商扩充数据的查询方法
+     * @param id - 主键ID
+     * @param accountId - 卡商账号ID
+     * @param money - 金额
+     * @param merchantType - 卡商类型：1我方卡商，2第三方卡商
+     * @param useStatus - 使用状态:1初始化有效正常使用，2无效暂停使用
+     * @param accountIdList - 卡商账号ID集合
+     * @return com.fruit.task.master.core.model.merchant.MerchantModel
+     * @author yoko
+     * @date 2020/9/23 20:30
+     */
+    public static MerchantModel assembleMerchantQuery(long id, long accountId, String money, int merchantType, int useStatus, List<Long> accountIdList){
+        MerchantModel resBean = new MerchantModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (accountId > 0){
+            resBean.setAccountId(accountId);
+        }
+        if (!StringUtils.isBlank(money)){
+            BigDecimal bd = new BigDecimal(money);
+            resBean.setMoney(bd);
+        }
+        if (merchantType > 0){
+            resBean.setMerchantType(merchantType);
+        }
+        if (useStatus > 0){
+            resBean.setUseStatus(useStatus);
+        }
+        if (accountIdList != null && accountIdList.size() > 0){
+            resBean.setAccountIdList(accountIdList);
+        }
         return resBean;
     }
 

@@ -3,6 +3,7 @@ import com.fruit.task.master.core.protocol.page.BasePage;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description 卡商扩充数据的实体属性Bean
@@ -92,6 +93,8 @@ public class MerchantModel extends BasePage implements Serializable {
      * 账号联系人
      */
     private String acContacts;
+
+    private List<Long> accountIdList;
 
     public Long getId() {
         return id;
@@ -219,5 +222,13 @@ public class MerchantModel extends BasePage implements Serializable {
 
     public void setLockMoney(String lockMoney) {
         this.lockMoney = lockMoney;
+    }
+
+    public List<Long> getAccountIdList() {
+        return accountIdList;
+    }
+
+    public void setAccountIdList(List<Long> accountIdList) {
+        this.accountIdList = accountIdList;
     }
 }
