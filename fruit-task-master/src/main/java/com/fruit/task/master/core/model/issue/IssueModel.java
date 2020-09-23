@@ -161,6 +161,8 @@ public class IssueModel extends BasePage implements Serializable {
      */
     private Integer whereCheckStatus;
 
+    private Integer limitNum;
+
     public Long getId() {
         return id;
     }
@@ -383,5 +385,13 @@ public class IssueModel extends BasePage implements Serializable {
 
     public void setWhereCheckStatus(Integer whereCheckStatus) {
         this.whereCheckStatus = whereCheckStatus;
+    }
+
+    public Integer getLimitNum() {
+        return limitNum;
+    }
+
+    public void setLimitNum(Integer limitNum) {
+        this.limitNum = limitNum;
     }
 }
