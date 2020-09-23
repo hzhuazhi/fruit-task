@@ -7,9 +7,10 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.account_id,a.order_no,a.order_money,a.order_status,a.pay_type,a.my_bank_info,
-        a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.data_explain,
-        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.id,a.account_id,a.card_site_id,a.order_no,a.order_type,a.issue_order_no,a.order_money,a.order_status,
+        a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.operate_status,a.is_synchro,a.check_status,a.check_info,
+        a.invalid_time,a.data_explain,
+        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
         a.create_time,a.update_time,a.yn
     </sql>
 

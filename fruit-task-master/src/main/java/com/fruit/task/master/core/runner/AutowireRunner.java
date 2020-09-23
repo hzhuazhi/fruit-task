@@ -96,6 +96,9 @@ public class AutowireRunner implements ApplicationRunner {
     @Autowired
     private ShortChainService shortChainService;
 
+    @Autowired
+    private IssueService issueService;
+
 
 
 
@@ -158,6 +161,7 @@ public class AutowireRunner implements ApplicationRunner {
         ComponentUtil.orderReplenishService = orderReplenishService;
         ComponentUtil.statisticsClickPayService = statisticsClickPayService;
         ComponentUtil.shortChainService = shortChainService;
+        ComponentUtil.issueService = issueService;
 
 
 

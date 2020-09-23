@@ -1,32 +1,28 @@
-package com.fruit.task.master.core.model.merchant;
+package com.fruit.task.master.core.model.issue;
+
 
 import com.fruit.task.master.core.protocol.page.BasePage;
 
 import java.io.Serializable;
 
 /**
- * @Description 卡商充值记录的实体属性Bean
+ * @Description 下发的实体属性Bean
  * @Author yoko
- * @Date 2020/9/8 17:38
+ * @Date 2020/9/23 11:33
  * @Version 1.0
  */
-public class MerchantRechargeModel extends BasePage implements Serializable {
-    private static final long   serialVersionUID = 1203223201104L;
+public class IssueModel extends BasePage implements Serializable {
+    private static final long   serialVersionUID = 1203223201121L;
+
+    public IssueModel(){
+
+    }
 
     /**
      * 主键ID
      */
     private Long id;
 
-    /**
-     * 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
-     */
-    private Long accountId;
-
-    /**
-     * 银行卡归属卡站点ID：对应表tb_hz_sys_account的主键ID，并且角色是卡站点
-     */
-    private Long cardSiteId;
 
     /**
      * 订单号
@@ -34,24 +30,14 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private String orderNo;
 
     /**
-     * 订单类型：1预付款订单，2平台发起订单，3下发订单
+     * 支付平台订单号：下游上报的订单号
      */
-    private Integer orderType;
-
-    /**
-     * 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
-     */
-    private String issueOrderNo;
+    private String outTradeNo;
 
     /**
      * 订单金额
      */
     private String orderMoney;
-
-    /**
-     * 订单状态：1初始化，2超时/失败/审核驳回，3成功
-     */
-    private Integer orderStatus;
 
     /**
      * 银行名称/归属开户行
@@ -69,19 +55,35 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private String accountName;
 
     /**
-     * 银行卡转账图片凭证
+     * 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     */
+    private Integer orderStatus;
+
+    /**
+     * 充值记录银行卡转账图片凭证
      */
     private String pictureAds;
 
-    /**
-     * 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
-     */
-    private Integer operateStatus;
 
     /**
-     * 是否需要数据同步：1不需要同步，2需要同步
+     * 我方银行卡信息备注：假如归属类型：我方/平台，填写我方银行卡的信息
      */
-    private Integer isSynchro;
+    private String myBankInfo;
+
+    /**
+     * 订单分配归属类型：1归属卡商，2归属平台
+     */
+    private Integer ascriptionType;
+
+    /**
+     * 是否已分配完毕归属：1初始化/未分配，2已分配
+     */
+    private Integer isDistribution;
+
+    /**
+     * 是否已归集完毕：1初始化/未归集完毕，2已归集完毕；此状态：是归属类型属于平台方，平台方需要向卡商发布充值订单，发布完毕，如果卡商都已经充值完毕到我方卡，则修改此状态，修改成归集完毕的状态
+     */
+    private Integer isComplete;
 
     /**
      * 审核状态：1初始化，2审核收款失败，3审核收款成功
@@ -89,14 +91,9 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer checkStatus;
 
     /**
-     * 审核失败缘由，审核失败的原因
+     *审核失败缘由，审核失败的原因
      */
     private String checkInfo;
-
-    /**
-     * 系统运行自动放弃的时间：订单分配完毕之后，订单类型是：下发分配订单，如果卡商在超过这个时间没有进行放弃或者锁定这样的操作，则自动修改成放弃。
-     */
-    private String invalidTime;
 
     /**
      * 数据说明：做解说用的
@@ -129,7 +126,7 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer runNum;
 
     /**
-     * 运行计算状态：：0初始化，1锁定，2计算失败，3计算成功
+     * 运行计算状态：0初始化，1锁定，2计算失败，3计算成功
      */
     private Integer runStatus;
 
@@ -142,6 +139,7 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      * 发送状态：0初始化，1锁定，2计算失败，3计算成功
      */
     private Integer sendStatus;
+
 
     /**
      * 创建时间
@@ -158,13 +156,10 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      */
     private Integer yn;
 
-    private Integer curdayStart;
-    private Integer curdayEnd;
-
     /**
      * SQL查询条件
      */
-    private String invalidTimeStr;
+    private Integer whereCheckStatus;
 
     public Long getId() {
         return id;
@@ -172,22 +167,6 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public Long getCardSiteId() {
-        return cardSiteId;
-    }
-
-    public void setCardSiteId(Long cardSiteId) {
-        this.cardSiteId = cardSiteId;
     }
 
     public String getOrderNo() {
@@ -198,20 +177,12 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public Integer getOrderType() {
-        return orderType;
+    public String getOutTradeNo() {
+        return outTradeNo;
     }
 
-    public void setOrderType(Integer orderType) {
-        this.orderType = orderType;
-    }
-
-    public String getIssueOrderNo() {
-        return issueOrderNo;
-    }
-
-    public void setIssueOrderNo(String issueOrderNo) {
-        this.issueOrderNo = issueOrderNo;
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
     }
 
     public String getOrderMoney() {
@@ -220,14 +191,6 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setOrderMoney(String orderMoney) {
         this.orderMoney = orderMoney;
-    }
-
-    public Integer getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(Integer orderStatus) {
-        this.orderStatus = orderStatus;
     }
 
     public String getBankName() {
@@ -254,6 +217,14 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.accountName = accountName;
     }
 
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     public String getPictureAds() {
         return pictureAds;
     }
@@ -262,20 +233,36 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.pictureAds = pictureAds;
     }
 
-    public Integer getOperateStatus() {
-        return operateStatus;
+    public String getMyBankInfo() {
+        return myBankInfo;
     }
 
-    public void setOperateStatus(Integer operateStatus) {
-        this.operateStatus = operateStatus;
+    public void setMyBankInfo(String myBankInfo) {
+        this.myBankInfo = myBankInfo;
     }
 
-    public Integer getIsSynchro() {
-        return isSynchro;
+    public Integer getAscriptionType() {
+        return ascriptionType;
     }
 
-    public void setIsSynchro(Integer isSynchro) {
-        this.isSynchro = isSynchro;
+    public void setAscriptionType(Integer ascriptionType) {
+        this.ascriptionType = ascriptionType;
+    }
+
+    public Integer getIsDistribution() {
+        return isDistribution;
+    }
+
+    public void setIsDistribution(Integer isDistribution) {
+        this.isDistribution = isDistribution;
+    }
+
+    public Integer getIsComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(Integer isComplete) {
+        this.isComplete = isComplete;
     }
 
     public Integer getCheckStatus() {
@@ -292,14 +279,6 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setCheckInfo(String checkInfo) {
         this.checkInfo = checkInfo;
-    }
-
-    public String getInvalidTime() {
-        return invalidTime;
-    }
-
-    public void setInvalidTime(String invalidTime) {
-        this.invalidTime = invalidTime;
     }
 
     public String getDataExplain() {
@@ -398,27 +377,11 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
         this.yn = yn;
     }
 
-    public Integer getCurdayStart() {
-        return curdayStart;
+    public Integer getWhereCheckStatus() {
+        return whereCheckStatus;
     }
 
-    public void setCurdayStart(Integer curdayStart) {
-        this.curdayStart = curdayStart;
-    }
-
-    public Integer getCurdayEnd() {
-        return curdayEnd;
-    }
-
-    public void setCurdayEnd(Integer curdayEnd) {
-        this.curdayEnd = curdayEnd;
-    }
-
-    public String getInvalidTimeStr() {
-        return invalidTimeStr;
-    }
-
-    public void setInvalidTimeStr(String invalidTimeStr) {
-        this.invalidTimeStr = invalidTimeStr;
+    public void setWhereCheckStatus(Integer whereCheckStatus) {
+        this.whereCheckStatus = whereCheckStatus;
     }
 }
