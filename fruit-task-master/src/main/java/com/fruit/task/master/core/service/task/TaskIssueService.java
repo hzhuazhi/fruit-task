@@ -2,6 +2,8 @@ package com.fruit.task.master.core.service.task;
 
 import com.fruit.task.master.core.common.service.BaseService;
 import com.fruit.task.master.core.model.issue.IssueModel;
+import com.fruit.task.master.core.model.merchant.MerchantModel;
+import com.fruit.task.master.core.model.merchant.MerchantRechargeModel;
 
 import java.util.List;
 
@@ -30,4 +32,18 @@ public interface TaskIssueService<T> extends BaseService<T> {
      * @date 2020/1/11 16:30
      */
     public int updateStatus(Object obj);
+
+    /**
+     * @Description: 处理下发订单分配给卡商的逻辑
+     * <p>
+     *     1.添加卡商充值信息
+     *     2.更新卡商的已跑量金额
+     * </p>
+     * @param merchantRechargeAdd - 卡商充值信息
+     * @param merchantUpdateMoney - 卡商金额更新
+     * @return
+     * @author yoko
+     * @date 2020/9/23 21:40
+    */
+    public boolean handleDistribution(MerchantRechargeModel merchantRechargeAdd, MerchantModel merchantUpdateMoney) throws Exception;
 }

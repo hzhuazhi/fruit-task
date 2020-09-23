@@ -12,6 +12,7 @@ import com.fruit.task.master.core.model.order.OrderModel;
 import com.fruit.task.master.core.service.task.TaskOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class TaskOrderServiceImpl<T> extends BaseServiceImpl<T> implements TaskO
         return taskOrderMapper.getOrderNotifyList(obj);
     }
 
+    @Transactional(rollbackFor=Exception.class)
     @Override
     public boolean handleSuccessOrder(BankCollectionModel bankCollectionModel, MerchantModel merchantUpdateMoney) throws Exception {
         int num1 = 0;

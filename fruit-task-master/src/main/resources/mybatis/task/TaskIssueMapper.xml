@@ -91,8 +91,8 @@
     </select>
 
     <!-- 更新信息数据的状态成功、失败的结果 -->
-    <update id="tb_fr_issue" parameterType="Object">
-        UPDATE tb_fr_order a
+    <update id="updateStatus" parameterType="Object">
+        UPDATE tb_fr_issue a
         <trim prefix="set" suffixOverrides=",">
             <if test="orderNo != null and orderNo != '' " >
                 a.order_no = #{orderNo},

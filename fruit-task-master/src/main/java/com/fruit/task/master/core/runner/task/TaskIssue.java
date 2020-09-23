@@ -1,6 +1,7 @@
 package com.fruit.task.master.core.runner.task;
 
 import com.fruit.task.master.core.common.utils.DateUtil;
+import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.ServerConstant;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
@@ -58,8 +59,8 @@ public class TaskIssue {
      * @date 2019/12/6 20:25
      */
 //    @Scheduled(cron = "5 * * * * ?")
-//    @Scheduled(fixedDelay = 1000) // 每1分钟执行
-    @Scheduled(fixedDelay = 30000) // 每30秒执行
+    @Scheduled(fixedDelay = 1000) // 每1秒执行
+//    @Scheduled(fixedDelay = 30000) // 每30秒执行
     public void issueDistribution() throws Exception{
 //        log.info("----------------------------------TaskIssue.issueDistribution()----start");
         // 策略：下发分配次数
@@ -83,11 +84,13 @@ public class TaskIssue {
                 String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ISSUE_DISTRIBUTION, data.getId());
                 boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
                 if (flagLock){
+                    IssueModel issueUpdate = null;
+
                     int ascriptionType = 0;// 订单分配归属类型：1归属卡商，2归属平台
                     List<Long> accountIdList = null;
                     // 查询是否有已经分配的纪录
                     MerchantRechargeModel merchantRechargeQuery = TaskMethod.assembleMerchantRechargeQuery(0,0,null, 3, data.getOrderNo(),
-                            0, 3, 0,0,null,null, "1");
+                            0, 0, 0,0,null,null, "1");
                     List<MerchantRechargeModel> merchantRechargeList = ComponentUtil.merchantRechargeService.findByCondition(merchantRechargeQuery);
                     if (merchantRechargeList != null && merchantRechargeList.size() > 0){
                         // 判断分配给卡商的次数是否大于等于部署的次数
@@ -116,8 +119,35 @@ public class TaskIssue {
 
                     if (ascriptionType == 1){
                         // 分配给卡商
+                        // 锁住这个卡商
+                        String lockKey_accountId = CachedKeyUtils.getCacheKey(CacheKey.LOCK_MERCHANT_MONEY, merchantData.getAccountId());
+                        boolean flagLock_accountId = ComponentUtil.redisIdService.lock(lockKey_accountId);
+                        if (flagLock_accountId){
+                            String orderNo = ComponentUtil.redisIdService.getNewId();
+                            String invalidTime = DateUtil.addDateMinute(issueDistributionTime);
+                            // 组装卡商充值订单信息
+                            MerchantRechargeModel merchantRechargeAdd = TaskMethod.assembleMerchantRechargeAdd(merchantData.getAccountId(), orderNo, 3, data.getOrderNo(),
+                                    data.getOrderMoney(), data.getBankName(), data.getBankCard(), data.getAccountName(), 2, invalidTime);
+                            // 组装卡商金额更新
+                            MerchantModel merchantUpdate = TaskMethod.assembleMerchantUpdateMoney(merchantData.getAccountId(), data.getOrderMoney());
+                            boolean flag = ComponentUtil.taskIssueService.handleDistribution(merchantRechargeAdd, merchantUpdate);
+                            if (flag){
+                                // 正常执行：状态修改成分配成功，是分配给卡商的
+                                issueUpdate = TaskMethod.assembleIssueUpdate(data.getId(), null, null, 0, null, null, 1, 2, 0, 0, null, null, 0);
+                            }else {
+                                // 事物有误，不做任何处理，等待下一次
+                            }
+
+                        }else{
+                            // 其它地方正在使用：这里无需做任何动作，等待下一次
+                        }
                     }else if (ascriptionType == 2){
                         // 分配给平台
+                        issueUpdate = TaskMethod.assembleIssueUpdate(data.getId(), null, null, 0, null, null, 2, 2, 0, 0, null, null, 0);
+                    }
+
+                    if (issueUpdate != null){
+                        ComponentUtil.taskIssueService.updateStatus(issueUpdate);
                     }
 
                     // 解锁

@@ -1019,4 +1019,124 @@ public class TaskMethod {
         return resBean;
     }
 
+    /**
+     * @Description: 组装查询下发的更新方法
+     * @param id - 主键ID
+     * @param orderNo - 订单号
+     * @param outTradeNo - 支付平台订单号：下游上报的订单号
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param pictureAds - 转账成功图片凭证
+     * @param myBankInfo - 我方银行卡信息备注：假如归属类型：我方/平台，填写我方银行卡的信息
+     * @param ascriptionType - 订单分配归属类型：1归属卡商，2归属平台
+     * @param isDistribution - 是否已分配完毕归属：1初始化/未分配，2已分配
+     * @param isComplete - 是否已归集完毕：1初始化/未归集完毕，2已归集完毕；此状态：是归属类型属于平台方，平台方需要向卡商发布充值订单，发布完毕，如果卡商都已经充值完毕到我方卡，则修改此状态，修改成归集完毕的状态
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param checkInfo -  审核失败缘由，审核失败的原因
+     * @param dataExplain - 数据说明：做解说用的
+     * @param whereCheckStatus - SQL查询条件 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @return com.hz.fruit.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/23 15:03
+     */
+    public static IssueModel assembleIssueUpdate(long id, String orderNo, String outTradeNo, int orderStatus, String pictureAds,
+                                                 String myBankInfo, int ascriptionType, int isDistribution, int isComplete, int checkStatus, String checkInfo,
+                                                 String dataExplain, int whereCheckStatus){
+        IssueModel resBean = new IssueModel();
+        if (id > 0){
+            resBean.setId(id);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (!StringUtils.isBlank(outTradeNo)){
+            resBean.setOutTradeNo(outTradeNo);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (!StringUtils.isBlank(pictureAds)){
+            resBean.setPictureAds(pictureAds);
+        }
+        if (!StringUtils.isBlank(myBankInfo)){
+            resBean.setMyBankInfo(myBankInfo);
+        }
+        if (ascriptionType > 0){
+            resBean.setAscriptionType(ascriptionType);
+        }
+        if (isDistribution > 0){
+            resBean.setIsDistribution(isDistribution);
+        }
+        if (isComplete > 0){
+            resBean.setIsComplete(isComplete);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(checkInfo)){
+            resBean.setCheckInfo(checkInfo);
+        }
+        if (!StringUtils.isBlank(dataExplain)){
+            resBean.setDataExplain(dataExplain);
+        }
+        if (whereCheckStatus > 0){
+            resBean.setWhereCheckStatus(whereCheckStatus);
+        }
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装添加卡商充值的信息
+     * @param accountId - 归属的账号ID：对应表tb_hz_sys_account的主键ID，并且角色类型是卡商
+     * @param orderNo - 订单号
+     * @param orderType - 订单类型：1预付款订单，2平台发起订单，3下发订单
+     * @param issueOrderNo - 下发表的订单号：对应表tb_fr_issue的order_no；也可以把它称之为关联订单号
+     * @param orderMoney - 订单金额
+     * @param bankName - 银行名称
+     * @param bankCard - 银行卡卡号
+     * @param accountName - 银行开户人
+     * @param isSynchro - 是否需要数据同步：1不需要同步，2需要同步
+     * @param invalidTime - 系统运行自动放弃的时间：订单分配完毕之后，订单类型是：下发分配订单，如果卡商在超过这个时间没有进行放弃或者锁定这样的操作，则自动修改成放弃。
+    * @param invalidTime
+     * @return com.hz.fruit.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/23 17:16
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeAdd(long accountId, String orderNo, int orderType, String issueOrderNo,
+                                                                    String orderMoney, String bankName, String bankCard, String accountName, int isSynchro,
+                                                                    String invalidTime){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        if (accountId > 0){
+            resBean.setAccountId(accountId);
+        }
+        if (!StringUtils.isBlank(orderNo)){
+            resBean.setOrderNo(orderNo);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (!StringUtils.isBlank(issueOrderNo)){
+            resBean.setIssueOrderNo(issueOrderNo);
+        }
+        if (!StringUtils.isBlank(orderMoney)){
+            resBean.setOrderMoney(orderMoney);
+        }
+        if (!StringUtils.isBlank(bankName)){
+            resBean.setBankName(bankName);
+        }
+        if (!StringUtils.isBlank(bankCard)){
+            resBean.setBankCard(bankCard);
+        }
+        if (!StringUtils.isBlank(accountName)){
+            resBean.setAccountName(accountName);
+        }
+        if (isSynchro > 0){
+            resBean.setIsSynchro(isSynchro);
+        }
+        if (!StringUtils.isBlank(invalidTime)){
+            resBean.setInvalidTime(invalidTime);
+        }
+        return resBean;
+    }
+
 }

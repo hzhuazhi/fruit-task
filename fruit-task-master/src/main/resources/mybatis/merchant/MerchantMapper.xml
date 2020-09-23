@@ -274,4 +274,19 @@
         and a.account_id = #{accountId}
         and a.yn = 0
     </update>
+
+
+    <!-- 扣除卡商的已跑量金额 -->
+    <update id="updateDeductMoney" parameterType="com.fruit.task.master.core.model.merchant.MerchantModel">
+        UPDATE tb_fr_merchant a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="money != null and money != '' " >
+                a.balance = a.balance - #{money},
+            </if>
+        </trim>
+        where 1=1
+        and a.account_id = #{accountId}
+        and a.yn = 0
+    </update>
+
 </mapper>
