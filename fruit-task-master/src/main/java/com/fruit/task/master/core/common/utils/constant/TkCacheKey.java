@@ -72,23 +72,23 @@ public interface TkCacheKey {
     String LOCK_MERCHANT_RECHARGE = "-12";
 
     /**
-     * LOCK-卡商的账户ID
-     */
-    String LOCK_ACCOUNT_ID = "-13";
-
-    /**
      * LOCK-下发-分配操作
      */
-    String LOCK_ISSUE_DISTRIBUTION = "-14";
+    String LOCK_ISSUE_DISTRIBUTION = "-13";
 
     /**
      * LOCK-下发-是否归集完毕操作
      */
-    String LOCK_ISSUE_COMPLETE = "-15";
+    String LOCK_ISSUE_COMPLETE = "-14";
 
     /**
      * LOCK-下发-同步下发的成功数据
      */
-    String LOCK_ISSUE_SEND = "-16";
+    String LOCK_ISSUE_SEND = "-15";
+
+    /**
+     * LOCK-卡商充值-订单类型：平台发起订单
+     */
+    String LOCK_MERCHANT_RECHARGE_BALANCE = "-16";
 
 }

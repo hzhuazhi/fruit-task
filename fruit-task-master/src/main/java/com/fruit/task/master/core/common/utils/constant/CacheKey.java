@@ -106,4 +106,10 @@ public interface CacheKey {
      */
     String LOCK_MERCHANT_MONEY = "-17";
 
+    /**
+     * LOCK-卡商的账户ID
+     * 用于更新字段least_money
+     */
+    String LOCK_ACCOUNT_ID = "-18";
+
 }

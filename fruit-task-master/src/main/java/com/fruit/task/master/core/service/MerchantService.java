@@ -38,6 +38,15 @@ public interface MerchantService<T> extends BaseService<T> {
     public int updateMoney(MerchantModel model);
 
     /**
+     * @Description: 扣除卡商的已跑量金额
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/23 21:51
+     */
+    public int updateDeductMoney(MerchantModel model);
+
+    /**
      * @Description: 保证金，预付款金额更新
      * <p>
      *     累加预付款金额
