@@ -1618,6 +1618,11 @@ public class StringUtil {
 		String sb4 = "11110.00";
 		boolean flag = StringUtil.getBigDecimalSubtract(sb3, sb4);
 		System.out.println("flag:" + flag);
+
+		String sb5 = "100.00";
+		String sb6 = "100";
+		String sb7 = StringUtil.getBigDecimalSubtractByStr(sb5, sb6);
+		System.out.println("sb7:" + sb7);
 	}
 
 }

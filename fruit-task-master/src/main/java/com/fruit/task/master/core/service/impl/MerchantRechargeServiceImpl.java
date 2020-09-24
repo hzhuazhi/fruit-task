@@ -2,6 +2,7 @@ package com.fruit.task.master.core.service.impl;
 import com.fruit.task.master.core.common.dao.BaseDao;
 import com.fruit.task.master.core.common.service.impl.BaseServiceImpl;
 import com.fruit.task.master.core.mapper.MerchantRechargeMapper;
+import com.fruit.task.master.core.model.merchant.MerchantRechargeModel;
 import com.fruit.task.master.core.service.MerchantRechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,10 @@ public class MerchantRechargeServiceImpl<T> extends BaseServiceImpl<T> implement
 
     public BaseDao<T> getDao() {
         return merchantRechargeMapper;
+    }
+
+    @Override
+    public String sumMoneyByOrder(MerchantRechargeModel model) {
+        return merchantRechargeMapper.sumMoneyByOrder(model);
     }
 }

@@ -354,6 +354,10 @@
         <include refid="Example_Where_Clause_id"/>
     </update>
 
-
+    <!-- 根据条件查询成功金额-->
+    <select id="sumMoneyByOrder" parameterType="Object" resultType="java.lang.String">
+        select ifnull(sum(convert(a.order_money,decimal(19,2))), '0.00') as money from tb_fr_merchant_recharge a
+        <include refid="Example_Where_Clause"/>
+    </select>
 
 </mapper>

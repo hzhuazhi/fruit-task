@@ -81,4 +81,9 @@ public interface TkCacheKey {
      */
     String LOCK_ISSUE_DISTRIBUTION = "-14";
 
+    /**
+     * LOCK-下发-是否归集完毕操作
+     */
+    String LOCK_ISSUE_COMPLETE = "-15";
+
 }
