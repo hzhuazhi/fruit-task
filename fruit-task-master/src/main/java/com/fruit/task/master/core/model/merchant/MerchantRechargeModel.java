@@ -171,6 +171,8 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      */
     private String operateStatusStr;
 
+    private Integer limitNum;
+
     public Long getId() {
         return id;
     }
@@ -433,5 +435,13 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setOperateStatusStr(String operateStatusStr) {
         this.operateStatusStr = operateStatusStr;
+    }
+
+    public Integer getLimitNum() {
+        return limitNum;
+    }
+
+    public void setLimitNum(Integer limitNum) {
+        this.limitNum = limitNum;
     }
 }

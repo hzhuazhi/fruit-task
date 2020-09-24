@@ -47,4 +47,16 @@ public interface MerchantMapper<T> extends BaseDao<T> {
      * @date 2020/9/23 21:51
     */
     public int updateDeductMoney(MerchantModel model);
+
+    /**
+     * @Description: 保证金，预付款金额更新
+     * <p>
+     *     累加预付款金额
+     * </p>
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/24 19:53
+     */
+    public int updateLeastMoney(MerchantModel model);
 }

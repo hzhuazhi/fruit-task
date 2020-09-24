@@ -40,11 +40,11 @@ public class TaskMerchantRecharge {
 
 
     /**
-     * @Description: 处理卡商充值
+     * @Description: 处理卡商充值-订单类型等于：预付款订单
      * <p>
      *     每5秒运行一次
      *     1.查询未跑的充值信息
-     *     2.根据充值中的归属卡商ID，更新卡商的金额
+     *     2.根据充值中的归属卡商ID，更新卡商的金额（这里的金额是预付款金额，保证金）
      * </p>
      * @author yoko
      * @date 2019/12/6 20:25
@@ -53,8 +53,9 @@ public class TaskMerchantRecharge {
     public void handleRecharge() throws Exception{
 //        log.info("----------------------------------TaskMerchantRecharge.handleRecharge()----start");
         // 获取订单补单数据
-        StatusModel statusQuery = TaskMethod.assembleTaskStatusQuery(limitNum, 1, 0, 0, 0, 0,0,3,null);
-        List<MerchantRechargeModel> synchroList = ComponentUtil.taskMerchantRechargeService.getDataList(statusQuery);
+        MerchantRechargeModel merchantRechargeQuery = TaskMethod.assembleMerchantRechargeByTaskQuery(limitNum, 1, 0, 1, 3, 0,
+                null,0,3, null);
+        List<MerchantRechargeModel> synchroList = ComponentUtil.taskMerchantRechargeService.getDataList(merchantRechargeQuery);
         for (MerchantRechargeModel data : synchroList){
             try{
                 // 锁住这个数据流水
@@ -95,7 +96,7 @@ public class TaskMerchantRecharge {
                         String lockKey_account = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ACCOUNT_ID, data.getAccountId());
                         boolean flagLock_account = ComponentUtil.redisIdService.lock(lockKey_account);
                         if (flagLock_account){
-                            int num = ComponentUtil.merchantService.updateBalance(merchantUpdate);
+                            int num = ComponentUtil.merchantService.updateLeastMoney(merchantUpdate);
                             if (num > 0){
                                 statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 3, 0, 0, 0,0,null);
                             }else{

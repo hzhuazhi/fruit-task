@@ -36,4 +36,16 @@ public interface MerchantService<T> extends BaseService<T> {
      * @date 2020/9/21 18:47
      */
     public int updateMoney(MerchantModel model);
+
+    /**
+     * @Description: 保证金，预付款金额更新
+     * <p>
+     *     累加预付款金额
+     * </p>
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/24 19:53
+    */
+    public int updateLeastMoney(MerchantModel model);
 }

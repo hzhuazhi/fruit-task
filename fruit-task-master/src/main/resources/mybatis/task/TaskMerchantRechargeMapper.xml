@@ -21,14 +21,38 @@
             <if test="id != null and id != '' " >
                 and a.id = #{id}
             </if>
+            <if test="orderType != null and orderType != '' " >
+                and a.order_type = #{orderType}
+            </if>
             <if test="orderStatus != null and orderStatus != '' " >
                 and a.order_status = #{orderStatus}
+            </if>
+            <if test="operateStatus != null and operateStatus != '' " >
+                and a.operate_status = #{operateStatus}
+            </if>
+            <if test="operateStatusStr != null and operateStatusStr != '' " >
+                and a.operate_status &lt;= 3
+            </if>
+            <if test="isSynchro != null and isSynchro != '' " >
+                and a.is_synchro = #{isSynchro}
+            </if>
+            <if test="checkStatus != null and checkStatus != '' " >
+                and a.check_status = #{checkStatus}
+            </if>
+            <if test="invalidTimeStr != null and invalidTimeStr != '' " >
+                and a.invalid_time &lt;= now()
             </if>
             <if test="runNum != null and runNum != '' " >
                 and a.run_num &lt; #{runNum}
             </if>
             <if test="runStatus != null and runStatus != '' " >
                 and a.run_status &lt; #{runStatus}
+            </if>
+            <if test="sendNum != null and sendNum != '' " >
+                and a.send_num &lt; #{sendNum}
+            </if>
+            <if test="sendStatus != null and sendStatus != '' " >
+                and a.send_status &lt; #{sendStatus}
             </if>
             and a.yn = 0
         </trim>

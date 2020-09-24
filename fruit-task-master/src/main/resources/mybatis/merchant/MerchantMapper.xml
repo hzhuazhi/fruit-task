@@ -289,4 +289,19 @@
         and a.yn = 0
     </update>
 
+
+    <!-- 保证金，预付款金额更新 -->
+    <update id="updateLeastMoney" parameterType="com.fruit.task.master.core.model.merchant.MerchantModel">
+        UPDATE tb_fr_merchant a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="money != null and money != '' " >
+                a.least_money = a.least_money + #{money},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
 </mapper>

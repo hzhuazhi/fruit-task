@@ -1173,4 +1173,56 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 组装task查询卡商充值的信息
+     * @param limitNum - 查询的条数
+     * @param runType - 运行类型
+     * @param sendType - 发送类型
+     * @param orderType - 订单类型：1预付款订单，2平台发起订单，3下发订单
+     * @param orderStatus - 订单状态：1初始化，2超时/失败/审核驳回，3成功
+     * @param operateStatus - 操作状态：1初始化，2系统放弃，3手动放弃，4锁定
+     * @param isSynchro - 是否需要数据同步：1不需要同步，2需要同步
+     * @param checkStatus - 审核状态：1初始化，2审核收款失败，3审核收款成功
+     * @param invalidTimeStr - 超时时间
+     * @return com.hz.fruit.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/23 17:16
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeByTaskQuery(int limitNum, int runType, int sendType, int orderType, int orderStatus, int operateStatus,
+                                                                      String operateStatusStr, int isSynchro, int checkStatus,  String invalidTimeStr){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        if (runType > 0){
+            resBean.setRunStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+            resBean.setRunNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        }
+        if (sendType > 0){
+            resBean.setSendStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+            resBean.setSendNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        }
+        if (orderType > 0){
+            resBean.setOrderType(orderType);
+        }
+        if (orderStatus > 0){
+            resBean.setOrderStatus(orderStatus);
+        }
+        if (operateStatus > 0){
+            resBean.setOperateStatus(operateStatus);
+        }
+        if (!StringUtils.isBlank(operateStatusStr)){
+            resBean.setOperateStatusStr(operateStatusStr);
+        }
+        if (isSynchro > 0){
+            resBean.setIsSynchro(isSynchro);
+        }
+        if (checkStatus > 0){
+            resBean.setCheckStatus(checkStatus);
+        }
+        if (!StringUtils.isBlank(invalidTimeStr)){
+            resBean.setInvalidTimeStr(invalidTimeStr);
+        }
+        resBean.setLimitNum(limitNum);
+        return resBean;
+    }
+
 }
