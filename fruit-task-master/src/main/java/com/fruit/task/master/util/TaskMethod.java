@@ -1225,4 +1225,18 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 根据订单号组装查询方法
+     * @param orderNo - 订单号
+     * @return
+     * @author yoko
+     * @date 2020/9/24 20:56
+    */
+    public static IssueModel assembleIssueByOrderQuery(String orderNo){
+        IssueModel resBean = new IssueModel();
+        resBean.setOrderNo(orderNo);
+        return resBean;
+    }
+
 }

@@ -95,6 +95,12 @@
             <if test="runStatus != null and runStatus != '' " >
                 a.run_status = #{runStatus},
             </if>
+            <if test="sendNum != null and sendNum != '' " >
+                a.send_num = a.send_num + #{sendNum},
+            </if>
+            <if test="sendStatus != null and sendStatus != '' " >
+                a.send_status = #{sendStatus},
+            </if>
             <if test="info != null and info != '' " >
                 a.data_explain = #{info},
             </if>

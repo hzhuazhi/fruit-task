@@ -3,6 +3,7 @@ package com.fruit.task.master.core.runner.task;
 import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
 import com.fruit.task.master.core.common.utils.constant.TkCacheKey;
+import com.fruit.task.master.core.model.issue.IssueModel;
 import com.fruit.task.master.core.model.merchant.MerchantModel;
 import com.fruit.task.master.core.model.merchant.MerchantRechargeModel;
 import com.fruit.task.master.core.model.task.base.StatusModel;
@@ -284,6 +285,72 @@ public class TaskMerchantRecharge {
                 e.printStackTrace();
                 // 更新此次task的状态：更新成失败：因为必填项没数据
                 StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0,0, 0,0,"异常失败try!");
+                ComponentUtil.taskMerchantRechargeService.updateStatus(statusModel);
+            }
+        }
+    }
+
+
+
+    /**
+     * @Description: 处理卡商充值-订单类型等于：下发订单（同步下发充值成功数据）
+     * <p>
+     *     每5秒运行一次
+     *     1.查询未跑的充值信息
+     *     2.把成功订单进行数据同步下发
+     * </p>
+     * @author yoko
+     * @date 2019/12/6 20:25
+     */
+    @Scheduled(fixedDelay = 5000) // 每5秒执行
+    public void handleRechargeByIssue() throws Exception{
+//        log.info("----------------------------------TaskMerchantRecharge.handleRechargeByIssue()----start");
+        // 获取订单补单数据
+        MerchantRechargeModel merchantRechargeQuery = TaskMethod.assembleMerchantRechargeByTaskQuery(limitNum, 0, 1, 3, 3, 0,
+                null,0,0, null);
+        List<MerchantRechargeModel> synchroList = ComponentUtil.taskMerchantRechargeService.getDataList(merchantRechargeQuery);
+        for (MerchantRechargeModel data : synchroList){
+            try{
+                // 锁住这个数据流水
+                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_MERCHANT_RECHARGE_ISSUE, data.getId());
+                boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
+                if (flagLock){
+                    StatusModel statusModel = null;
+
+                    // 根据订单号查询下发表的数据
+                    IssueModel issueQuery = TaskMethod.assembleIssueByOrderQuery(data.getIssueOrderNo());
+                    IssueModel issueModel = (IssueModel)ComponentUtil.issueService.findByObject(issueQuery);
+                    if (issueModel == null || issueModel.getId() == null || issueModel.getId() <= 0){
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 2,0,"根据下发订单号未查到下发信息");
+                        // 更新状态
+                        ComponentUtil.taskMerchantRechargeService.updateStatus(statusModel);
+                        // 解锁
+                        ComponentUtil.redisIdService.delLock(lockKey);
+                        continue;
+                    }
+
+                    // 更新下发信息
+                    IssueModel issueUpdate = TaskMethod.assembleIssueUpdate(issueModel.getId(), null, null, 3, data.getPictureAds(),
+                            null,0,0,0,0,null,null,0);
+                    int num = ComponentUtil.issueService.update(issueUpdate);
+                    if (num > 0){
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 3,0,null);
+                    }else{
+                        statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0, 0, 2,0,"更新卡商余额响应行为0");
+                    }
+
+                    if (statusModel != null){
+                        ComponentUtil.taskMerchantRechargeService.updateStatus(statusModel);
+                    }
+                    // 解锁
+                    ComponentUtil.redisIdService.delLock(lockKey);
+                }
+//                log.info("----------------------------------TaskMerchantRecharge.handleRechargeByIssue()----end");
+            }catch (Exception e){
+                log.error(String.format("this TaskMerchantRecharge.handleRechargeByIssue() is error , the dataId=%s !", data.getId()));
+                e.printStackTrace();
+                // 更新此次task的状态：更新成失败：因为必填项没数据
+                StatusModel statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 0, 0,0, 2,0,"异常失败try!");
                 ComponentUtil.taskMerchantRechargeService.updateStatus(statusModel);
             }
         }
