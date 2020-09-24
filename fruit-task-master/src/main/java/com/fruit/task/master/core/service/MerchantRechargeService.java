@@ -19,4 +19,13 @@ public interface MerchantRechargeService<T> extends BaseService<T> {
      * @date 2020/9/24 15:09
      */
     public String sumMoneyByOrder(MerchantRechargeModel model);
+
+    /**
+     * @Description: 更新操作状态
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/9/24 21:46
+    */
+    public int updateOperateStatus(MerchantRechargeModel model);
 }

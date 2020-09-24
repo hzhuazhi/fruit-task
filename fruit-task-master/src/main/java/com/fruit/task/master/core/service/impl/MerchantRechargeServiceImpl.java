@@ -45,4 +45,9 @@ public class MerchantRechargeServiceImpl<T> extends BaseServiceImpl<T> implement
     public String sumMoneyByOrder(MerchantRechargeModel model) {
         return merchantRechargeMapper.sumMoneyByOrder(model);
     }
+
+    @Override
+    public int updateOperateStatus(MerchantRechargeModel model) {
+        return merchantRechargeMapper.updateOperateStatus(model);
+    }
 }

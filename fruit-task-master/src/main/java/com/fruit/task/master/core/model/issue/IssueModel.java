@@ -163,6 +163,11 @@ public class IssueModel extends BasePage implements Serializable {
 
     private Integer limitNum;
 
+    /**
+     * SQL-条件
+     */
+    private Integer whereIsDistribution;
+
     public Long getId() {
         return id;
     }
@@ -393,5 +398,13 @@ public class IssueModel extends BasePage implements Serializable {
 
     public void setLimitNum(Integer limitNum) {
         this.limitNum = limitNum;
+    }
+
+    public Integer getWhereIsDistribution() {
+        return whereIsDistribution;
+    }
+
+    public void setWhereIsDistribution(Integer whereIsDistribution) {
+        this.whereIsDistribution = whereIsDistribution;
     }
 }

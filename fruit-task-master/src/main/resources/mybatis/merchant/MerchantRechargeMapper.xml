@@ -360,4 +360,16 @@
         <include refid="Example_Where_Clause"/>
     </select>
 
+
+
+    <!-- 更新操作状态 -->
+    <update id="updateOperateStatus" parameterType="com.fruit.task.master.core.model.merchant.MerchantRechargeModel">
+        UPDATE tb_fr_merchant_recharge a
+        set a.operate_status = #{operateStatus}
+        where 1=1
+        and a.id = #{id}
+        and a.operate_status = #{whereOperateStatus}
+        and a.yn = 0
+    </update>
+
 </mapper>

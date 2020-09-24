@@ -3,6 +3,7 @@ package com.fruit.task.master.core.service.impl;
 import com.fruit.task.master.core.common.dao.BaseDao;
 import com.fruit.task.master.core.common.service.impl.BaseServiceImpl;
 import com.fruit.task.master.core.mapper.IssueMapper;
+import com.fruit.task.master.core.model.issue.IssueModel;
 import com.fruit.task.master.core.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,10 @@ public class IssueServiceImpl<T> extends BaseServiceImpl<T> implements IssueServ
 
     public BaseDao<T> getDao() {
         return issueMapper;
+    }
+
+    @Override
+    public int updateDistribution(IssueModel model) {
+        return issueMapper.updateDistribution(model);
     }
 }

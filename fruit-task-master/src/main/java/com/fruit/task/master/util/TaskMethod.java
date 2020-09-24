@@ -1239,4 +1239,40 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 组装更新卡商充值订单的操作状态
+     * @param id - 主键ID
+     * @param operateStatus - 要更新的操作状态
+     * @param whereOperateStatus - 更新的where条件
+     * @return com.fruit.task.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/24 22:04
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeUpdateOperate(long id, int operateStatus, int whereOperateStatus){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        resBean.setId(id);
+        resBean.setOperateStatus(operateStatus);
+        resBean.setWhereOperateStatus(whereOperateStatus);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装更新分配状态的方法
+     * @param id - 主键ID
+     * @param isDistribution - 是否已分配完毕归属：1初始化/未分配，2已分配
+     * @param whereIsDistribution - 更新是否分配完毕的更新where条件
+     * @return com.fruit.task.master.core.model.issue.IssueModel
+     * @author yoko
+     * @date 2020/9/24 22:08
+     */
+    public static IssueModel assembleIssueUpdateDistribution(long id, int isDistribution, int whereIsDistribution){
+        IssueModel resBean = new IssueModel();
+        resBean.setId(id);
+        resBean.setIsDistribution(isDistribution);
+        resBean.setWhereIsDistribution(whereIsDistribution);
+        return resBean;
+    }
+
 }

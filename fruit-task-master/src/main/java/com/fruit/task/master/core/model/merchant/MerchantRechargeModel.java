@@ -183,6 +183,11 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     private Integer limitNum;
 
+    /**
+     * SQL-条件
+     */
+    private Integer whereOperateStatus;
+
     public Long getId() {
         return id;
     }
@@ -469,5 +474,14 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setInvalidStatus(Integer invalidStatus) {
         this.invalidStatus = invalidStatus;
+    }
+
+
+    public Integer getWhereOperateStatus() {
+        return whereOperateStatus;
+    }
+
+    public void setWhereOperateStatus(Integer whereOperateStatus) {
+        this.whereOperateStatus = whereOperateStatus;
     }
 }

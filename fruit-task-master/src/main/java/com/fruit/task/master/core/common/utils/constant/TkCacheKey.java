@@ -107,4 +107,12 @@ public interface TkCacheKey {
      */
     String LOCK_MERCHANT_RECHARGE_ISSUE = "-18";
 
+    /**
+     * LOCK-卡商充值-订单类型：下发订单- 更新操作状态
+     * <p>
+     *     把操作状态属于初始化状态的更新成废弃状态
+     * </p>
+     */
+    String LOCK_MERCHANT_RECHARGE_OPERATE = "-19";
+
 }

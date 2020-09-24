@@ -322,5 +322,17 @@
 
 
 
+    <!-- 更新是否分配完毕归属 -->
+    <update id="updateDistribution" parameterType="com.fruit.task.master.core.model.issue.IssueModel">
+        UPDATE tb_fr_issue a
+        set a.is_distribution = #{isDistribution}
+        where 1=1
+        and a.id = #{id}
+        and a.is_distribution = #{whereIsDistribution}
+        and a.yn = 0
+    </update>
+
+
+
 
 </mapper>

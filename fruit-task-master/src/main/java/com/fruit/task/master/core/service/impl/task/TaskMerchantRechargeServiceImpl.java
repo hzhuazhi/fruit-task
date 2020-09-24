@@ -1,12 +1,17 @@
 package com.fruit.task.master.core.service.impl.task;
 
 import com.fruit.task.master.core.common.dao.BaseDao;
+import com.fruit.task.master.core.common.exception.ServiceException;
 import com.fruit.task.master.core.common.service.impl.BaseServiceImpl;
+import com.fruit.task.master.core.mapper.IssueMapper;
+import com.fruit.task.master.core.mapper.MerchantRechargeMapper;
 import com.fruit.task.master.core.mapper.task.TaskMerchantRechargeMapper;
+import com.fruit.task.master.core.model.issue.IssueModel;
 import com.fruit.task.master.core.model.merchant.MerchantRechargeModel;
 import com.fruit.task.master.core.service.task.TaskMerchantRechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +33,12 @@ public class TaskMerchantRechargeServiceImpl<T> extends BaseServiceImpl<T> imple
     @Autowired
     private TaskMerchantRechargeMapper taskMerchantRechargeMapper;
 
+    @Autowired
+    private MerchantRechargeMapper merchantRechargeMapper;
+
+    @Autowired
+    private IssueMapper issueMapper;
+
 
 
     public BaseDao<T> getDao() {
@@ -42,5 +53,21 @@ public class TaskMerchantRechargeServiceImpl<T> extends BaseServiceImpl<T> imple
     @Override
     public int updateStatus(Object obj) {
         return taskMerchantRechargeMapper.updateStatus(obj);
+    }
+
+    @Transactional(rollbackFor=Exception.class)
+    @Override
+    public boolean handleOperateStatus(MerchantRechargeModel merchantRechargeModel, IssueModel issueModel) throws Exception {
+        int num1 = 0;
+        int num2 = 0;
+
+        num1 = merchantRechargeMapper.updateOperateStatus(merchantRechargeModel);
+        num2 = issueMapper.updateDistribution(issueModel);
+        if (num1> 0 && num2 >0){
+            return true;
+        }else {
+            throw new ServiceException("handleOperateStatus", "二个执行更新SQL其中有一个或者多个响应行为0");
+//                throw new RuntimeException();
+        }
     }
 }
