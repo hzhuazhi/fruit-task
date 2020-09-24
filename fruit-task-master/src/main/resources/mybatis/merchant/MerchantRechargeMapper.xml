@@ -10,7 +10,7 @@
         a.id,a.account_id,a.card_site_id,a.order_no,a.order_type,a.issue_order_no,a.order_money,a.order_status,
         a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.operate_status,a.is_synchro,a.check_status,a.check_info,
         a.invalid_time,a.data_explain,
-        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
+        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,a.invalid_num,a.invalid_status,
         a.create_time,a.update_time,a.yn
     </sql>
 

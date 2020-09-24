@@ -43,6 +43,16 @@ public class StatusModel implements Serializable {
     private Integer sendStatus;
 
     /**
+     * 失效金额运算次数
+     */
+    private Integer invalidNum;
+
+    /**
+     * 失效金额运算状态：0初始化，1锁定，2计算失败，3计算成功
+     */
+    private Integer invalidStatus;
+
+    /**
      * 运行计算状态：0初始化，1锁定，2计算失败，3计算成功
      * 当做条件
      */
@@ -291,5 +301,21 @@ public class StatusModel implements Serializable {
 
     public void setLessThan(Integer lessThan) {
         this.lessThan = lessThan;
+    }
+
+    public Integer getInvalidNum() {
+        return invalidNum;
+    }
+
+    public void setInvalidNum(Integer invalidNum) {
+        this.invalidNum = invalidNum;
+    }
+
+    public Integer getInvalidStatus() {
+        return invalidStatus;
+    }
+
+    public void setInvalidStatus(Integer invalidStatus) {
+        this.invalidStatus = invalidStatus;
     }
 }

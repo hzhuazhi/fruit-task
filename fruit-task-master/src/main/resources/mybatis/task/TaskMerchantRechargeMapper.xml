@@ -10,7 +10,7 @@
         a.id,a.account_id,a.card_site_id,a.order_no,a.order_type,a.issue_order_no,a.order_money,a.order_status,
         a.bank_name,a.bank_card,a.account_name,a.picture_ads,a.operate_status,a.is_synchro,a.check_status,a.check_info,
         a.invalid_time,a.data_explain,
-        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
+        a.remark,a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,a.invalid_num,a.invalid_status,
         a.create_time,a.update_time,a.yn
     </sql>
 
@@ -53,6 +53,12 @@
             </if>
             <if test="sendStatus != null and sendStatus != '' " >
                 and a.send_status &lt; #{sendStatus}
+            </if>
+            <if test="invalidNum != null and invalidNum != '' " >
+                and a.invalid_num &lt; #{invalidNum}
+            </if>
+            <if test="invalidStatus != null and invalidStatus != '' " >
+                and a.invalid_status &lt; #{invalidStatus}
             </if>
             and a.yn = 0
         </trim>
@@ -100,6 +106,12 @@
             </if>
             <if test="sendStatus != null and sendStatus != '' " >
                 a.send_status = #{sendStatus},
+            </if>
+            <if test="invalidNum != null and invalidNum != '' " >
+                a.invalid_num = a.invalid_num + #{invalidNum},
+            </if>
+            <if test="invalidStatus != null and invalidStatus != '' " >
+                a.invalid_status = #{invalidStatus},
             </if>
             <if test="info != null and info != '' " >
                 a.data_explain = #{info},

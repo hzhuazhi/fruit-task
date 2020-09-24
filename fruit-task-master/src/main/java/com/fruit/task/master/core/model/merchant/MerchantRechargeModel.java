@@ -144,6 +144,16 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
     private Integer sendStatus;
 
     /**
+     * 失效金额运算次数
+     */
+    private Integer invalidNum;
+
+    /**
+     * 失效金额运算状态：0初始化，1锁定，2计算失败，3计算成功
+     */
+    private Integer invalidStatus;
+
+    /**
      * 创建时间
      */
     private String createTime;
@@ -443,5 +453,21 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setLimitNum(Integer limitNum) {
         this.limitNum = limitNum;
+    }
+
+    public Integer getInvalidNum() {
+        return invalidNum;
+    }
+
+    public void setInvalidNum(Integer invalidNum) {
+        this.invalidNum = invalidNum;
+    }
+
+    public Integer getInvalidStatus() {
+        return invalidStatus;
+    }
+
+    public void setInvalidStatus(Integer invalidStatus) {
+        this.invalidStatus = invalidStatus;
     }
 }
