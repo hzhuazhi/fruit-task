@@ -1,6 +1,8 @@
 package com.fruit.task.master.core.runner.task;
 
+import com.alibaba.fastjson.JSON;
 import com.fruit.task.master.core.common.utils.DateUtil;
+import com.fruit.task.master.core.common.utils.HttpSendUtils;
 import com.fruit.task.master.core.common.utils.StringUtil;
 import com.fruit.task.master.core.common.utils.constant.CacheKey;
 import com.fruit.task.master.core.common.utils.constant.CachedKeyUtils;
@@ -20,7 +22,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -180,7 +184,7 @@ public class TaskIssue {
     public void issueComplete() throws Exception{
 //        log.info("----------------------------------TaskIssue.issueComplete()----start");
 
-        // 获取未填充可爱猫回调店员绑定小微的数据
+        // 获取未归集完毕的数据
         IssueModel issueQuery = TaskMethod.assembleIssueQuery(limitNum,0,0, 3, 2, 2, 1,3,0);
         List<IssueModel> synchroList = ComponentUtil.taskIssueService.getDataList(issueQuery);
         for (IssueModel data : synchroList){
@@ -220,5 +224,77 @@ public class TaskIssue {
         }
     }
 
+
+
+
+    /**
+     * @Description: 检测已经完成的订单进行数据同步给下游
+     * <p>
+     *     每5秒钟执行运行一次
+     *     1.查询订单状态是成功的.
+     *     2.把数据进行同步下发。
+     * </p>
+     * @author yoko
+     * @date 2019/12/6 20:25
+     */
+//    @Scheduled(cron = "5 * * * * ?")
+    @Scheduled(fixedDelay = 5000) // 每5秒执行
+    public void issueSynchro() throws Exception{
+//        log.info("----------------------------------TaskIssue.issueSynchro()----start");
+
+        // 获取未同步下发给下游的数据
+        IssueModel issueQuery = TaskMethod.assembleIssueQuery(limitNum,0,1, 3, 0, 0, 0,0,0);
+        List<IssueModel> synchroList = ComponentUtil.taskIssueService.getDataList(issueQuery);
+        for (IssueModel data : synchroList){
+            try{
+                // 锁住这个数据流水
+                String lockKey = CachedKeyUtils.getCacheKeyTask(TkCacheKey.LOCK_ISSUE_SEND, data.getId());
+                boolean flagLock = ComponentUtil.redisIdService.lock(lockKey);
+                if (flagLock){
+                    IssueModel issueUpdate = null;
+
+
+                    Map<String, Object> sendMap = new HashMap<>();
+                    sendMap.put("total_amount", data.getOutTradeNo());
+                    sendMap.put("pay_amount", data.getOrderMoney());
+                    sendMap.put("out_trade_no", data.getOutTradeNo());
+                    sendMap.put("trade_status", 1);
+                    sendMap.put("trade_no", data.getOrderNo());
+                    sendMap.put("trade_time", data.getCreateTime());
+                    sendMap.put("picture_ads", data.getPictureAds());
+
+                    String sendUrl = ComponentUtil.loadConstant.issueNotifyUrl;
+
+//                    sendUrl = "http://localhost:8085/pay/data/fine";
+//                    String resp = HttpSendUtils.sendGet(sendUrl + "?" + URLEncoder.encode(sendData,"UTF-8"), null, null);
+//                    String resp = HttpSendUtils.sendGet(sendUrl + "?" + sendData, null, null);
+                    String resp = HttpSendUtils.sendPostAppJson(sendUrl , JSON.toJSONString(sendMap));
+                    if (resp.indexOf("ok") > -1){
+                        // 成功
+                        issueUpdate = TaskMethod.assembleIssueUpdateStatus(data.getId(), 0, 3, 0);
+                    }else {
+                        issueUpdate = TaskMethod.assembleIssueUpdateStatus(data.getId(), 0, 2, 0);
+                    }
+//                    issueUpdate = TaskMethod.assembleIssueUpdateStatus(data.getId(), 0, 3, 0);
+
+
+
+                    if (issueUpdate != null){
+                        ComponentUtil.taskIssueService.updateStatus(issueUpdate);
+                    }
+
+                    // 解锁
+                    ComponentUtil.redisIdService.delLock(lockKey);
+                }
+
+//                log.info("----------------------------------TaskIssue.issueSynchro()----end");
+            }catch (Exception e){
+                log.error(String.format("this TaskIssue.issueSynchro() is error , the dataId=%s !", data));
+                e.printStackTrace();
+                IssueModel issueUpdate = TaskMethod.assembleIssueUpdateStatus(data.getId(), 0, 2, 0);
+                ComponentUtil.taskIssueService.updateStatus(issueUpdate);
+            }
+        }
+    }
 
 }

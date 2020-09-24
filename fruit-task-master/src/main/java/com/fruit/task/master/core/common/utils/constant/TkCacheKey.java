@@ -86,4 +86,9 @@ public interface TkCacheKey {
      */
     String LOCK_ISSUE_COMPLETE = "-15";
 
+    /**
+     * LOCK-下发-同步下发的成功数据
+     */
+    String LOCK_ISSUE_SEND = "-16";
+
 }

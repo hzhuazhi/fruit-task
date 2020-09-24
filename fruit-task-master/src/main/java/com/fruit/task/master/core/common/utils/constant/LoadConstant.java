@@ -55,6 +55,12 @@ public class LoadConstant {
     @Value("${default.notify.url}")
     public String defaultNotifyUrl;
 
+    /**
+     * 提现下发数据同步地址
+     */
+    @Value("${issue.notify,url}")
+    public String issueNotifyUrl;
+
 
 
 
