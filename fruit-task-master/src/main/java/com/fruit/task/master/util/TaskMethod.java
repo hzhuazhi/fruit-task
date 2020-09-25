@@ -1275,4 +1275,50 @@ public class TaskMethod {
         return resBean;
     }
 
+
+    /**
+     * @Description: 组装查询执行操作状态放弃的方法
+     * @param limitNum - 执行条数
+     * @param operateStatusStart - 操作状态-开始
+     * @param operateStatusEnd - 操作状态-结束
+     * @return com.fruit.task.master.core.model.merchant.MerchantRechargeModel
+     * @author yoko
+     * @date 2020/9/25 10:05
+     */
+    public static MerchantRechargeModel assembleMerchantRechargeTaskByInvalidQuery(int limitNum, int operateStatusStart, int operateStatusEnd){
+        MerchantRechargeModel resBean = new MerchantRechargeModel();
+        resBean.setLimitNum(limitNum);
+        resBean.setOperateStatusStart(operateStatusStart);
+        resBean.setOperateStatusEnd(operateStatusEnd);
+
+        resBean.setInvalidStatus(ServerConstant.PUBLIC_CONSTANT.RUN_STATUS_THREE);
+        resBean.setInvalidNum(ServerConstant.PUBLIC_CONSTANT.RUN_NUM_FIVE);
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装更新失效运算的方法
+     * @param id
+     * @param invalidStatus
+     * @param info
+     * @return com.fruit.task.master.core.model.task.base.StatusModel
+     * @author yoko
+     * @date 2020/9/25 11:07
+     */
+    public static StatusModel assembleStatusUpdateInvalid(long id, int invalidStatus, String info){
+        StatusModel resBean = new StatusModel();
+        resBean.setId(id);
+        if (invalidStatus > 0){
+            resBean.setInvalidStatus(invalidStatus);
+            if (invalidStatus == ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_TWO){
+                // 表示失败：失败则需要运行次数加一
+                resBean.setInvalidNum(ServerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE);
+            }
+        }
+        if (!StringUtils.isBlank(info)){
+            resBean.setInfo(info);
+        }
+        return resBean;
+    }
+
 }

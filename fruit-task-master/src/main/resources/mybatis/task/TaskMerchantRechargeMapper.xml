@@ -60,6 +60,12 @@
             <if test="invalidStatus != null and invalidStatus != '' " >
                 and a.invalid_status &lt; #{invalidStatus}
             </if>
+            <if test="operateStatusStart != null and operateStatusStart != '' " >
+                and a.operate_status >= #{operateStatusStart}
+            </if>
+            <if test="operateStatusEnd != null and operateStatusEnd != '' " >
+                and a.operate_status &lt;= #{operateStatusEnd}
+            </if>
             and a.yn = 0
         </trim>
     </sql>

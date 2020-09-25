@@ -188,6 +188,9 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
      */
     private Integer whereOperateStatus;
 
+    private Integer operateStatusStart;
+    private Integer operateStatusEnd;
+
     public Long getId() {
         return id;
     }
@@ -483,5 +486,21 @@ public class MerchantRechargeModel extends BasePage implements Serializable {
 
     public void setWhereOperateStatus(Integer whereOperateStatus) {
         this.whereOperateStatus = whereOperateStatus;
+    }
+
+    public Integer getOperateStatusStart() {
+        return operateStatusStart;
+    }
+
+    public void setOperateStatusStart(Integer operateStatusStart) {
+        this.operateStatusStart = operateStatusStart;
+    }
+
+    public Integer getOperateStatusEnd() {
+        return operateStatusEnd;
+    }
+
+    public void setOperateStatusEnd(Integer operateStatusEnd) {
+        this.operateStatusEnd = operateStatusEnd;
     }
 }

@@ -125,6 +125,10 @@ public class StatusModel implements Serializable {
      */
     private Integer lessThan;
 
+
+    private Integer operateStatusStart;
+    private Integer operateStatusEnd;
+
     public Long getId() {
         return id;
     }
@@ -317,5 +321,21 @@ public class StatusModel implements Serializable {
 
     public void setInvalidStatus(Integer invalidStatus) {
         this.invalidStatus = invalidStatus;
+    }
+
+    public Integer getOperateStatusStart() {
+        return operateStatusStart;
+    }
+
+    public void setOperateStatusStart(Integer operateStatusStart) {
+        this.operateStatusStart = operateStatusStart;
+    }
+
+    public Integer getOperateStatusEnd() {
+        return operateStatusEnd;
+    }
+
+    public void setOperateStatusEnd(Integer operateStatusEnd) {
+        this.operateStatusEnd = operateStatusEnd;
     }
 }
