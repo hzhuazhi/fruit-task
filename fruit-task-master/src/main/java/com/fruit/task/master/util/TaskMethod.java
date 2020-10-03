@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -410,7 +411,8 @@ public class TaskMethod {
                 continue;
             }
 
-            endIndex = getIndexOfByStr(smsContent, bankShortMsgStrategyModel.getEndMoney());
+//            endIndex = getIndexOfByStr(smsContent, bankShortMsgStrategyModel.getEndMoney());
+            endIndex = getIndexOfByStrByIndex(smsContent, bankShortMsgStrategyModel.getEndMoney(), startIndex);
             if (endIndex > 0){
             }else {
                 continue;
@@ -449,6 +451,28 @@ public class TaskMethod {
             return 0;
         }
     }
+
+
+    /**
+     * @Description: 获取key在内容中的下标位
+     * <p>
+     *     从字符串的某一个下标位开始
+     * </p>
+     * @param content - 类容
+     * @param key - 匹配的关键字
+     * @return
+     * @author yoko
+     * @date 2020/6/4 11:18
+     */
+    public static int getIndexOfByStrByIndex(String content, String key, int index){
+        String str = content.substring(index, content.length());
+        if (str.indexOf(key) > -1){
+            return str.indexOf(key) + index;
+        }else {
+            return 0;
+        }
+    }
+
 
 
     /**
@@ -527,6 +551,9 @@ public class TaskMethod {
             resBean.setBankTypeId(bankTypeId);
         }
         if (!StringUtils.isBlank(money)){
+            if (money.indexOf(".") <= -1){
+                money = money + ".00";
+            }
             resBean.setMoney(money);
         }
         if (!StringUtils.isBlank(lastNum)){
@@ -1319,6 +1346,38 @@ public class TaskMethod {
             resBean.setInfo(info);
         }
         return resBean;
+    }
+
+    public static void main(String []args){
+        List<BankShortMsgStrategyModel> bankShortMsgStrategyList = new ArrayList<>();
+        BankShortMsgStrategyModel bankShortMsgStrategyModel1 = new BankShortMsgStrategyModel();
+        bankShortMsgStrategyModel1.setStartMoney("支付宝)");
+        bankShortMsgStrategyModel1.setEndMoney("元");
+
+        BankShortMsgStrategyModel bankShortMsgStrategyModel2 = new BankShortMsgStrategyModel();
+        bankShortMsgStrategyModel2.setStartMoney("收入(手机转账)");
+        bankShortMsgStrategyModel2.setEndMoney("元");
+
+        BankShortMsgStrategyModel bankShortMsgStrategyModel3 = new BankShortMsgStrategyModel();
+        bankShortMsgStrategyModel3.setStartMoney("收入(转账)");
+        bankShortMsgStrategyModel3.setEndMoney("元");
+
+        BankShortMsgStrategyModel bankShortMsgStrategyModel4 = new BankShortMsgStrategyModel();
+        bankShortMsgStrategyModel4.setStartMoney("收入(他行汇入)");
+        bankShortMsgStrategyModel4.setEndMoney("元");
+
+        BankShortMsgStrategyModel bankShortMsgStrategyModel5 = new BankShortMsgStrategyModel();
+        bankShortMsgStrategyModel5.setStartMoney("收入(冲正)");
+        bankShortMsgStrategyModel5.setEndMoney("元");
+
+        bankShortMsgStrategyList.add(bankShortMsgStrategyModel1);
+        bankShortMsgStrategyList.add(bankShortMsgStrategyModel2);
+        bankShortMsgStrategyList.add(bankShortMsgStrategyModel3);
+        bankShortMsgStrategyList.add(bankShortMsgStrategyModel4);
+        bankShortMsgStrategyList.add(bankShortMsgStrategyModel5);
+        String smsContent = "您尾号2666卡10月3日01:00元快捷支付收入(肖爱林支付宝转账支付宝)300元，余额13,814元。【工商银行】";
+        String money = getBankMoney(bankShortMsgStrategyList, smsContent);
+        System.out.println("money:" + money);
     }
 
 }
