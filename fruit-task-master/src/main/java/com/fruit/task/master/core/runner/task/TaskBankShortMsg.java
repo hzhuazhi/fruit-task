@@ -174,7 +174,7 @@ public class TaskBankShortMsg {
                     String startTime = DateUtil.addAndSubtractDateMinute(data.getCreateTime(), -invalidTimeNum);// 数据的创建时间减订单超时时间=特定时间的前几分中的时间
                     String endTime = data.getCreateTime();
                      // 查询订单
-                    OrderModel orderQuery = TaskMethod.assembleOrderQuery(0, data.getBankId(), null,0, data.getMoney(), 1, null, 1, startTime, endTime);
+                    OrderModel orderQuery = TaskMethod.assembleOrderQuery(0, data.getBankId(), null,0,null, data.getMoney(), 1, null, 1, startTime, endTime);
                     List<OrderModel> orderList = ComponentUtil.orderService.findByCondition(orderQuery);
                     if (orderList == null || orderList.size() <= 0){
                         statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"匹配订单失败：根据银行卡ID、金额、订单状态、创建时间未匹配到订单!");

@@ -40,6 +40,11 @@ public class OrderModel extends BasePage implements Serializable {
     private String orderMoney;
 
     /**
+     * 实际派发金额
+     */
+    private String distributionMoney;
+
+    /**
      * 收款的二维码地址：转码之后的二维码
      */
     private String qrCode;
@@ -104,6 +109,16 @@ public class OrderModel extends BasePage implements Serializable {
      * 银行归属卡商名称
      */
     private String merchantName;
+
+    /**
+     * 银行卡归属卡站点ID：对应表tb_hz_sys_account的主键ID，并且角色是卡站点
+     */
+    private Long cardSiteId;
+
+    /**
+     * 卡站点名称
+     */
+    private String cardSiteName;
 
     /**
      * 归属的商户ID：对应表tb_fr_channel的主键ID
@@ -554,5 +569,29 @@ public class OrderModel extends BasePage implements Serializable {
 
     public void setLimitNum(Integer limitNum) {
         this.limitNum = limitNum;
+    }
+
+    public String getDistributionMoney() {
+        return distributionMoney;
+    }
+
+    public void setDistributionMoney(String distributionMoney) {
+        this.distributionMoney = distributionMoney;
+    }
+
+    public Long getCardSiteId() {
+        return cardSiteId;
+    }
+
+    public void setCardSiteId(Long cardSiteId) {
+        this.cardSiteId = cardSiteId;
+    }
+
+    public String getCardSiteName() {
+        return cardSiteName;
+    }
+
+    public void setCardSiteName(String cardSiteName) {
+        this.cardSiteName = cardSiteName;
     }
 }

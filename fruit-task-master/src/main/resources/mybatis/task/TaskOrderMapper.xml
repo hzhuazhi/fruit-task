@@ -7,13 +7,12 @@
 
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id,a.bank_id,a.order_no,a.order_type,a.order_money,a.qr_code,a.out_trade_no,a.order_status,
+        a.id,a.bank_id,a.order_no,a.order_type,a.order_money,a.distribution_money,a.qr_code,a.out_trade_no,a.order_status,
         a.invalid_time,a.notify_url,a.bank_name,a.bank_card,a.account_name,a.bank_code,a.mobile_card_id,
-        a.phone_num,a.account_id,a.merchant_name,a.channel_id,a.channel_name,a.replenish_type,a.work_type,
+        a.phone_num,a.account_id,a.merchant_name,a.card_site_id,a.card_site_name,a.channel_id,a.channel_name,a.replenish_type,a.work_type,
         a.data_explain,a.remark,
         a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
         a.create_time,a.update_time,a.yn
-
     </sql>
 
     <!-- 查询条件 -->

@@ -570,6 +570,7 @@ public class TaskMethod {
      * @param orderNo - 订单号
      * @param orderType - 订单类型
      * @param orderMoney - 订单金额
+     * @param distributionMoney - 实际派发金额
      * @param orderStatus - 订单状态
      * @param orderStatusStr - 订单大于等于状态
      * @param replenishType - 补单类型
@@ -579,7 +580,7 @@ public class TaskMethod {
      * @author yoko
      * @date 2020/9/14 20:54
      */
-    public static OrderModel assembleOrderQuery(long id, long bankId, String orderNo, int orderType, String orderMoney, int orderStatus,
+    public static OrderModel assembleOrderQuery(long id, long bankId, String orderNo, int orderType, String orderMoney, String distributionMoney, int orderStatus,
                                                       String orderStatusStr, int replenishType, String startTime, String endTime){
         OrderModel resBean = new OrderModel();
         if (id > 0){
@@ -596,6 +597,9 @@ public class TaskMethod {
         }
         if (!StringUtils.isBlank(orderMoney)){
             resBean.setOrderMoney(orderMoney);
+        }
+        if (!StringUtils.isBlank(distributionMoney)){
+            resBean.setDistributionMoney(distributionMoney);
         }
         if (orderStatus > 0){
             resBean.setOrderStatus(orderStatus);

@@ -64,7 +64,7 @@ public class TaskOrderReplenish {
                     StatusModel statusModel = null;
 
                     // 获取派单信息
-                    OrderModel orderQuery = TaskMethod.assembleOrderQuery(0,0, data.getOrderNo(),0,null,0,null,0,null,null);
+                    OrderModel orderQuery = TaskMethod.assembleOrderQuery(0,0, data.getOrderNo(),0,null,null,0,null,0,null,null);
                     OrderModel orderModel = (OrderModel)ComponentUtil.orderService.findByObject(orderQuery);
                     if (orderModel == null || orderModel.getId() == null || orderModel.getId() <= 0){
                         statusModel = TaskMethod.assembleTaskUpdateStatus(data.getId(), 2, 0, 0, 0,0,"根据订单号未查到派单信息");

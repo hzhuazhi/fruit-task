@@ -92,6 +92,7 @@ public class ServerConstant {
         SHORT_CHAIN_MONEY(7,""),
         ISSUE_DISTRIBUTION_NUM(8,""),
         ISSUE_DISTRIBUTION_TIME(9,""),
+        BANK_MONEY_OUT(10,""),
 
 
 
